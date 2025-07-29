@@ -24,7 +24,7 @@ const Navbar = () => {
                 isActive("/home") ? "font-bold text-blue-600" : "font-medium text-gray-600"
               } hover:text-blue-600 transition-colors duration-200`}
             >
-              JourneyON
+              Home
             </Link>
           </div>
 

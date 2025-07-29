@@ -1,23 +1,14 @@
 import React from "react";
+import Navbar from "../components/Navbar";
+import "tailwindcss";
 
-const Homepage: () => React.ReactElement = () => (
-  <div className="text-center">
-    <header>
-      <nav>
-        <h1>JourneyON</h1>
-      </nav>
-    </header>
-    <br />
-    <main>
-      <h1>Generic Motivational Quote</h1>
-    </main>
-    <br />
-    <footer>
-      <nav>
-        Placeholder nav
-      </nav>
-    </footer>
-  </div>
-)
-
-export default Homepage;
+export default function Homepage(): React.ReactElement {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      <main className="container mx-auto px-6 py-8">
+        <h1 className="text-3xl font-bold text-gray-800">Home page</h1>
+      </main>
+    </div>
+  );
+}

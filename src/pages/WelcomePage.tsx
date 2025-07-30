@@ -20,13 +20,9 @@ export default function WelcomePage(): React.ReactElement {
           </div>
         </section>
         <section className="mx-auto columns-2">
-          <Link to={"/login"}>
-            <button>Log In</button>
-          </Link>
-          <br />
-          <Link to={"/signup"}>
-            <button>Sign Up</button>
-          </Link>
+          <p>Login</p>
+          <p>Sign Up</p>
+          {/*For some reason, buttons mess up the styling*/}
         </section>
       </main>
     </div>

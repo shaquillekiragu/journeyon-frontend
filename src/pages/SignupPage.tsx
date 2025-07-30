@@ -21,11 +21,11 @@ export default function SignupPage(): React.ReactElement {
   const [accountsList, setAccountsList] = useState<INewAccount[]>([]);
   const [showError, setShowError] = useState(false);
 
-  function handleSubmit(event: any): void {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
     setShowError(false);
 
-    const formData = new FormData(event.target);
+    const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string;
 
     const accountExists = accountsList.some(
@@ -68,6 +68,7 @@ export default function SignupPage(): React.ReactElement {
             name="firstName"
             type="text"
             placeholder=" First name..."
+            value={firstName}
             required
             className="border rounded-md"
             onChange={(event) => {
@@ -85,6 +86,7 @@ export default function SignupPage(): React.ReactElement {
             name="lastName"
             type="text"
             placeholder=" Last name..."
+            value={lastName}
             required
             className="border rounded-md"
             onChange={(event) => {
@@ -102,6 +104,7 @@ export default function SignupPage(): React.ReactElement {
             name="email"
             type="text"
             placeholder=" Email..."
+            value={email}
             required
             className="border rounded-md"
             onChange={(event) => {
@@ -119,6 +122,7 @@ export default function SignupPage(): React.ReactElement {
             name="password"
             type="password"
             placeholder=" Password..."
+            value={password}
             required
             className="border rounded-md"
             onChange={(event) => {

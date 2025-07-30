@@ -21,11 +21,11 @@ export default function SignupPage(): React.ReactElement {
   const [accountsList, setAccountsList] = useState<INewAccount[]>([]);
   const [showError, setShowError] = useState(false);
 
-  function handleSubmit(event: any): void {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
     setShowError(false);
 
-    const formData = new FormData(event.target);
+    const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string;
 
     const accountExists = accountsList.some(

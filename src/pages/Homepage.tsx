@@ -25,7 +25,7 @@ export default function Homepage(): React.ReactElement {
           <h2>Hello {name}, welcome back!</h2>
         </section>
         <br />
-        <section className="columns-2xl">
+        <section className="grid grid-cols-1 md:grid-cols-2 mx-2 gap-4">
           <Link to={"/diary"}>
             <DiaryHome />
           </Link>
@@ -33,6 +33,8 @@ export default function Homepage(): React.ReactElement {
             <ProgressHome />
           </Link>
         </section>
+        <br />
+        <br />
       </main>
     </div>
   );

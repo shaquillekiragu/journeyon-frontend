@@ -1,23 +1,18 @@
 import type React from "react";
 
 const DiaryHome: () => React.ReactElement = () => (
-  <>
-    <h2>Diary</h2>
-    <ul>
-        <li>
-            <p>Diary Entry</p>
-            <p>Date: 30/7/2025</p>
-        </li>
-        <li>
-            <p>Diary Entry</p>
-            <p>Date: 31/7/2025</p>
-        </li>
-        <li>
-            <p>Diary Entry</p>
-            <p>Date: 1/8/2025</p>
-        </li>
-    </ul>
-  </>
+    <div className="bg-orange-100 px-5 rounded-lg p-2">
+        <h2 className="text-center underline text-neutral-950">Diary</h2>
+        <div className="grid grid-cols-2">
+            <div className="text-left">
+                <h3 className="font-bold">Placeholder Entry - 1/1/1970</h3>
+                <p>This is some placeholder text.</p>
+            </div>
+            <div className="text-center">
+                <p>ok</p>
+            </div>
+        </div>
+    </div>
 );
 
 export default DiaryHome;

@@ -1,0 +1,7 @@
+* {
+    --blue: rgb(92, 127, 163);
+}
+
+.blueBg {
+    background-color: var(--blue) !important;
+}

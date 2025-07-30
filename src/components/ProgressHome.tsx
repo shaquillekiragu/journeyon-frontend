@@ -10,8 +10,10 @@ const ProgressHome: () => React.ReactElement = () => {
                 <h3 className="font-bold">Placeholder Entry - 2/1/1970</h3>
                 <p>This is some placeholder text.</p>
             </div>
-            <div className="text-center">
-                <p>ok</p>
+            <div className="text-right">
+                <button className="blueBg text-white px-4 py-2 rounded">
+                    View my progress
+                </button>
             </div>
         </div>
     </div>

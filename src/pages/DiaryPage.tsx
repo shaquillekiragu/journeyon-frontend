@@ -19,9 +19,9 @@ export default function DiaryPage(): React.ReactElement {
   const [creatingNewEntry, setCreatingNewEntry] = useState<boolean>(false);
   const [entryIdCounter, setEntryIdCounter] = useState<number>(0);
 
-  function handleSubmit(event: any): void {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-    const formData = new FormData(event.target);
+    const formData = new FormData(event.currentTarget);
 
     const newEntry: IDiaryEntry = {
       id: entryIdCounter,

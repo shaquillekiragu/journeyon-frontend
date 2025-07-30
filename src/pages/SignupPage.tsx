@@ -68,6 +68,7 @@ export default function SignupPage(): React.ReactElement {
             name="firstName"
             type="text"
             placeholder=" First name..."
+            value={firstName}
             required
             className="border rounded-md"
             onChange={(event) => {
@@ -85,6 +86,7 @@ export default function SignupPage(): React.ReactElement {
             name="lastName"
             type="text"
             placeholder=" Last name..."
+            value={lastName}
             required
             className="border rounded-md"
             onChange={(event) => {
@@ -102,6 +104,7 @@ export default function SignupPage(): React.ReactElement {
             name="email"
             type="text"
             placeholder=" Email..."
+            value={email}
             required
             className="border rounded-md"
             onChange={(event) => {
@@ -119,6 +122,7 @@ export default function SignupPage(): React.ReactElement {
             name="password"
             type="password"
             placeholder=" Password..."
+            value={password}
             required
             className="border rounded-md"
             onChange={(event) => {

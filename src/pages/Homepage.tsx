@@ -3,6 +3,8 @@ import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import "tailwindcss";
 import { Link } from "react-router-dom";
+import DiaryHome from "../components/DiaryHome";
+import ProgressHome from "../components/ProgressHome";
 
 export default function Homepage(): React.ReactElement {
   const name: string = "Ibrahim";
@@ -12,8 +14,8 @@ export default function Homepage(): React.ReactElement {
       <Header />
       <Navbar />
       <main className="container mx-auto text-center">
-        <section className="px-6 py-8 h-100 mb-3" id="theHero">
-          <h1 className="text-3xl font-bold text-gray-800 m-auto">
+        <section className="px-6 py-8 h-100 mb-3 bg-sky-700" id="theHero">
+          <h1 className="text-3xl font-bold text-neutral-50 m-auto">
             <q>Generic Motivational Quote</q>
           </h1>
         </section>
@@ -21,12 +23,12 @@ export default function Homepage(): React.ReactElement {
           <h2>Hello {name}, welcome back!</h2>
         </section>
         <br />
-        <section className="columns-2">
+        <section className="columns-2xl">
           <Link to={"/diary"}>
-            <p>Diary</p>
+            <DiaryHome />
           </Link>
           <Link to={"/progress"}>
-            <p>Progress</p>
+            <ProgressHome />
           </Link>
         </section>
       </main>

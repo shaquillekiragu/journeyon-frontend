@@ -1,12 +1,18 @@
 import React from "react";
+import { useState } from "react";
 
 export default function SignupPage(): React.ReactElement {
-  function handleSubmit(event: any): void {
-    event.preventDefault();
-  }
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  function handleClick(event: any): void {
+  async function handleSubmit(event: any): void {
     event.preventDefault();
+    try {
+    } catch (error) {
+    } finally {
+    }
   }
 
   return (
@@ -24,6 +30,9 @@ export default function SignupPage(): React.ReactElement {
             type="text"
             placeholder=" First name..."
             className="border rounded-md"
+            onChange={(event) => {
+              setFirstName(event.target.value);
+            }}
           />
         </div>
 
@@ -37,6 +46,9 @@ export default function SignupPage(): React.ReactElement {
             type="text"
             placeholder=" Last name..."
             className="border rounded-md"
+            onChange={(event) => {
+              setLastName(event.target.value);
+            }}
           />
         </div>
 
@@ -50,6 +62,9 @@ export default function SignupPage(): React.ReactElement {
             type="text"
             placeholder=" Email..."
             className="border rounded-md"
+            onChange={(event) => {
+              setEmail(event.target.value);
+            }}
           />
         </div>
 
@@ -63,6 +78,9 @@ export default function SignupPage(): React.ReactElement {
             type="password"
             placeholder=" Password..."
             className="border rounded-md"
+            onChange={(event) => {
+              setPassword(event.target.value);
+            }}
           />
         </div>
 
@@ -93,7 +111,7 @@ export default function SignupPage(): React.ReactElement {
         </div>
 
         <button
-          onClick={handleClick}
+          type="submit"
           className="border rounded-md mt-5 p-1 hover:cursor-pointer"
         >
           Submit

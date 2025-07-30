@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import DiaryEntry from "../components/DiaryEntry";
 import CreateDiaryEntryForm from "../components/CreateDiaryEntryForm";
 import { getTodaysDate } from "../utils/getTodaysDate";
+import SubHeader from "../components/SubHeader";
 
 export default function DiaryPage(): React.ReactElement {
   interface IDiaryEntry {
@@ -47,6 +48,7 @@ export default function DiaryPage(): React.ReactElement {
       <Header />
       <Navbar />
       <main className="container mx-auto px-6 py-8 flex flex-col justify-center items-center gap-10">
+      <SubHeader text="Let's record your thoughts and experiences!" />
         <h1 className="text-3xl font-bold text-gray-800">Diary page</h1>
         <ul className="">
           {entriesList.map((entry) => (

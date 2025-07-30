@@ -1,7 +1,8 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -10,10 +11,14 @@ const Navbar = () => {
   const handleSignOut = () => {
     // Add sign out logic here
     console.log("Signing out...");
+    navigate("/");
   };
 
   return (
-    <nav className="w-full shadow-md border-b border-gray-200" style={{ backgroundColor: '#5c7fa3' }}>
+    <nav
+      className="w-full shadow-md border-b border-gray-200"
+      style={{ backgroundColor: "#5c7fa3" }}
+    >
       <div className="w-full px-6 py-4">
         <div className="flex items-center justify-evenly w-full">
           {/* JourneyON */}
@@ -23,7 +28,7 @@ const Navbar = () => {
               className={`text-lg ${
                 isActive("/home") ? "font-extrabold" : "font-light"
               } hover:opacity-80 transition-all duration-200`}
-              style={{ color: '#fdfbf1' }}
+              style={{ color: "#fdfbf1" }}
             >
               Home
             </Link>
@@ -36,12 +41,12 @@ const Navbar = () => {
               className={`text-lg ${
                 isActive("/diary") ? "font-extrabold" : "font-light"
               } hover:opacity-80 transition-all duration-200`}
-              style={{ color: '#fdfbf1' }}
+              style={{ color: "#fdfbf1" }}
             >
               Diary
             </Link>
           </div>
-          
+
           {/* Progress */}
           <div className="flex-1 text-center">
             <Link
@@ -49,7 +54,7 @@ const Navbar = () => {
               className={`text-lg ${
                 isActive("/progress") ? "font-extrabold" : "font-light"
               } hover:opacity-80 transition-all duration-200`}
-              style={{ color: '#fdfbf1' }}
+              style={{ color: "#fdfbf1" }}
             >
               Progress
             </Link>
@@ -60,7 +65,7 @@ const Navbar = () => {
             <button
               onClick={handleSignOut}
               className="text-lg font-light hover:opacity-80 transition-all duration-200"
-              style={{ color: '#fdfbf1' }}
+              style={{ color: "#fdfbf1" }}
             >
               Sign Out
             </button>

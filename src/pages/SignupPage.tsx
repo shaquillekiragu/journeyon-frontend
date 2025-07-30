@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 interface INewAccount {
   id: number;
@@ -55,8 +55,8 @@ export default function SignupPage(): React.ReactElement {
   }
 
   return (
-    <main className="flex flex-col justify-center items-center gap-10 mt-[20vh]">
-      <h1 className="text-4xl text-center font-semibold mb-5">Signup Page</h1>
+    <main className="flex flex-col justify-center items-center gap-5 mt-[20vh]">
+      <h1 className="text-4xl text-center font-semibold mb-10">Signup Page</h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <div className="flex gap-5">
@@ -170,6 +170,12 @@ export default function SignupPage(): React.ReactElement {
           Submit
         </button>
       </form>
+      <p>
+        Already have an account?{" "}
+        <Link to="/login" className="hover:underline">
+          Login!
+        </Link>
+      </p>
     </main>
   );
 }

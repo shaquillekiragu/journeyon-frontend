@@ -8,8 +8,6 @@ import DiaryHome from "../components/DiaryHome";
 import ProgressHome from "../components/ProgressHome";
 
 export default function Homepage(): React.ReactElement {
-  const name: string = "Ibrahim";
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -20,9 +18,6 @@ export default function Homepage(): React.ReactElement {
           <h1 className="text-3xl font-bold text-neutral-50 m-auto">
             <q>Generic Motivational Quote</q>
           </h1>
-        </section>
-        <section className="xs:w-full md:w-150 lg:w-200 mx-auto bg-orange-200 p-2 md:rounded-lg">
-          <h2>Hello {name}, welcome back!</h2>
         </section>
         <br />
         <section className="grid grid-cols-1 md:grid-cols-2 mx-2 gap-4">

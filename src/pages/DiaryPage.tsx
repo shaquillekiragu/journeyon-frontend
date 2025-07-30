@@ -47,8 +47,8 @@ export default function DiaryPage(): React.ReactElement {
     <div className="min-h-screen bg-gray-50">
       <Header />
       <Navbar />
-      <main className="container mx-auto px-6 py-8 flex flex-col justify-center items-center gap-10">
-      <SubHeader text="Let's record your thoughts and experiences!" />
+      <main className="container mx-auto px-6 flex flex-col justify-center items-center gap-10">
+        <SubHeader text="Let's record your thoughts and experiences!" />
         <h1 className="text-3xl font-bold text-gray-800">Diary page</h1>
         <ul className="">
           {entriesList.map((entry) => (

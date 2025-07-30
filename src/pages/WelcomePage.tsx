@@ -19,13 +19,18 @@ export default function WelcomePage(): React.ReactElement {
             </h1>
           </div>
         </section>
-        <section className="mx-auto columns-2">
-          <Link to={"/login"}>
-            <button>Log In</button>
+        <section className="mx-auto w-full h-10 flex justify-center items-center">
+          <Link
+            to={"/login"}
+            className="w-1/2 h-full flex justify-center items-center hover:cursor-pointer hover:bg-blue-100"
+          >
+            Log In
           </Link>
-          <br />
-          <Link to={"/signup"}>
-            <button>Sign Up</button>
+          <Link
+            to={"/signup"}
+            className="w-1/2 h-full flex justify-center items-center hover:cursor-pointer hover:bg-blue-100"
+          >
+            Sign Up
           </Link>
         </section>
       </main>

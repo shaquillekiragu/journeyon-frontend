@@ -12,7 +12,7 @@ export default function Homepage(): React.ReactElement {
     <div className="min-h-screen bg-gray-50">
       <Header />
       <Navbar />
-      <SubHeader text=" =) Read your motivational Quote of the Day!" /
+      <SubHeader text=" =) Read your motivational Quote of the Day!" />
       <main className="container mx-auto text-center">
         <section className="px-6 py-8 h-100 mb-3" id="theHero">
           <h1 className="text-3xl font-bold text-gray-800 m-auto">

@@ -4,10 +4,13 @@ interface SubHeaderProps {
 
 const SubHeader = ({ text }: SubHeaderProps) => {
   return (
-    <section className="w-full px-9 py-6 text-center" style={{ backgroundColor: '#fdfbf1' }}>
-      <p className="text-xl font-medium" style={{ color: '#5c7fa3' }}>
+    <section className="w-full flex justify-center py-6">
+      <div
+        className="text-black text-3xl font-light rounded-lg px-15 py-2"
+        style={{ backgroundColor: "#b6a79a" }}
+      >
         Welcome back, Nabiha! {text}
-      </p>
+      </div>
     </section>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { getUsers } from "../api";
 
 interface IAccount {
   id: number;
@@ -9,6 +10,9 @@ interface IAccount {
 
 export default function LoginPage(): React.ReactElement {
   const navigate = useNavigate();
+  const response = getUsers();
+  const users = response.data.users;
+  console.log(users, " < users");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,8 +20,19 @@ export default function LoginPage(): React.ReactElement {
 
   const handleLogin = (e: React.FormEvent): void => {
     e.preventDefault();
-    console.log("Logging in with...", email, password);
-    navigate("/home");
+
+    const isCorrectEmail = users.some((user) => {
+      return user.user.email === email;
+    });
+
+    const isCorrectPassword = users.some((user) => {
+      return user.user.password === password;
+    });
+
+    if (isCorrectEmail && isCorrectPassword) {
+      navigate("/home");
+    }
+    setShowError(true);
   };
 
   return (

@@ -1,12 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
-
-interface UserContextType {
-  loggedInUser: any | null;
-  setLoggedInUser: (user: any | null) => void;
-  isLoggedIn: boolean;
-  setIsLoggedIn: (loggedIn: boolean) => void;
-}
+import type { UserContextType } from "../interfaces";
 
 export const UserContext = createContext<UserContextType | undefined>(
   undefined

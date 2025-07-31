@@ -1,13 +1,5 @@
 import React from "react";
-
-interface IDiaryEntryProps {
-  entry: {
-    id: number;
-    title: string;
-    body: string;
-    date: string;
-  };
-}
+import type { IDiaryEntryProps } from "../interfaces";
 
 export default function DiaryEntry({
   entry,

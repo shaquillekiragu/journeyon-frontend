@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import "tailwindcss";
@@ -7,8 +7,16 @@ import SubHeader from "../components/SubHeader";
 import ImageQuoteBanner from "../components/ImageQuoteBanner.tsx";
 import DiaryHome from "../components/DiaryHome";
 import ProgressHome from "../components/ProgressHome";
+import { getQuote } from "../api.ts";
 
 export default function Homepage(): React.ReactElement {
+  const [quote, setQuote] = useState("");
+  
+  useEffect(() => {
+    const tempQuote: string = getQuote();
+    setQuote(tempQuote);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header size="large" />
@@ -16,7 +24,7 @@ export default function Homepage(): React.ReactElement {
 
       <ImageQuoteBanner
         imageSrc="/hackathon-image.png"
-        quote="Confidence doesn't come from knowing everything - it comes from knowing you can learn anything"
+        quote={quote}
       />
 
       <SubHeader text=" =) Read your motivational Quote of the Day!" />

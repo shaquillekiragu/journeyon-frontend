@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import type { INewAccount } from "../interfaces";
+import Header from "../components/Header";
 
 export default function SignupPage(): React.ReactElement {
   const navigate = useNavigate();
@@ -48,131 +49,195 @@ export default function SignupPage(): React.ReactElement {
   }
 
   return (
-    <main className="flex flex-col justify-center items-center gap-5 mt-[20vh]">
-      <h1 className="text-4xl text-center font-semibold mb-10">Signup Page</h1>
-
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        <div className="flex gap-5">
-          <label htmlFor="firstName" className="font-semibold">
-            First Name:
-          </label>
-          <input
-            id="firstName"
-            name="firstName"
-            type="text"
-            placeholder=" First name..."
-            value={firstName}
-            required
-            className="border rounded-md"
-            onChange={(event) => {
-              setFirstName(event.target.value);
+    <div className="min-h-screen" style={{ backgroundColor: "#fefbf1" }}>
+      <Header size="large" />
+      <main className="flex justify-center items-end gap-8 mt-[10vh] relative">
+        <div className="flex flex-col gap-5">
+          <div
+            className="p-6 rounded-lg w-[500px] h-auto"
+            style={{
+              border: "2px solid #5c7fa3",
             }}
-          />
-        </div>
+          >
+            <div
+              className="p-16 rounded-lg shadow-lg"
+              style={{
+                backgroundColor: "#5c7fa3",
+              }}
+            >
+              <h1 className="text-4xl text-center font-semibold mb-16 text-white text-decoration-line: underline">
+                Sign Up
+              </h1>
 
-        <div className="flex gap-5">
-          <label htmlFor="lastName" className="font-semibold">
-            Last Name:
-          </label>
-          <input
-            id="lastName"
-            name="lastName"
-            type="text"
-            placeholder=" Last name..."
-            value={lastName}
-            required
-            className="border rounded-md"
-            onChange={(event) => {
-              setLastName(event.target.value);
-            }}
-          />
-        </div>
+              <form onSubmit={handleSubmit} className="flex flex-col gap-12">
+                <div className="flex gap-5">
+                  <label
+                    htmlFor="firstName"
+                    className="font-normal text-white w-24"
+                  >
+                    First Name:
+                  </label>
+                  <input
+                    id="firstName"
+                    name="firstName"
+                    type="text"
+                    placeholder=" First name..."
+                    value={firstName}
+                    required
+                    className="border bg-white rounded-md px-2 py-1"
+                    onChange={(event) => {
+                      setFirstName(event.target.value);
+                    }}
+                  />
+                </div>
 
-        <div className="flex gap-5">
-          <label htmlFor="email" className="font-semibold">
-            Email:
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="text"
-            placeholder=" Email..."
-            value={email}
-            required
-            className="border rounded-md"
-            onChange={(event) => {
-              setEmail(event.target.value);
-            }}
-          />
-        </div>
+                <div className="flex gap-5">
+                  <label
+                    htmlFor="lastName"
+                    className="font-normal text-white w-24"
+                  >
+                    Last Name:
+                  </label>
+                  <input
+                    id="lastName"
+                    name="lastName"
+                    type="text"
+                    placeholder=" Last name..."
+                    value={lastName}
+                    required
+                    className="border bg-white rounded-md px-2 py-1"
+                    onChange={(event) => {
+                      setLastName(event.target.value);
+                    }}
+                  />
+                </div>
 
-        <div className="flex gap-5">
-          <label htmlFor="password" className="font-semibold">
-            Password:
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder=" Password..."
-            value={password}
-            required
-            className="border rounded-md"
-            onChange={(event) => {
-              setPassword(event.target.value);
-            }}
-          />
-        </div>
+                <div className="flex gap-5">
+                  <label
+                    htmlFor="email"
+                    className="font-normal text-white w-24"
+                  >
+                    Email:
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="text"
+                    placeholder=" Email..."
+                    value={email}
+                    required
+                    className="border bg-white rounded-md px-2 py-1"
+                    onChange={(event) => {
+                      setEmail(event.target.value);
+                    }}
+                  />
+                </div>
 
-        <div className="flex flex-col gap-3">
-          <h3 className="font-semibold">Courses:</h3>
+                <div className="flex gap-5">
+                  <label
+                    htmlFor="password"
+                    className="font-normal text-white w-24"
+                  >
+                    Password:
+                  </label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder=" Password..."
+                    value={password}
+                    required
+                    className="border bg-white rounded-md px-2 py-1"
+                    onChange={(event) => {
+                      setPassword(event.target.value);
+                    }}
+                  />
+                </div>
 
-          <div className="flex gap-3 ml-5">
-            <input
-              id="software-development"
-              name="course"
-              type="radio"
-              className="border rounded-md"
-            />
-            <label htmlFor="software-development" className="font-semibold">
-              Software Development
-            </label>
+                <div className="flex gap-5">
+                  <label
+                    htmlFor="courseId"
+                    className="font-normal text-white w-24"
+                  >
+                    Course ID:
+                  </label>
+                  <input
+                    id="courseId"
+                    name="courseId"
+                    type="text"
+                    placeholder=" Course ID..."
+                    required
+                    className="border bg-white rounded-md px-2 py-1"
+                  />
+                </div>
+
+                <p
+                  className={`text-red-300 text-center mb-4 ${
+                    showError ? "visible" : "hidden"
+                  }`}
+                >
+                  An account with this email already exists.
+                </p>
+
+                <button
+                  type="submit"
+                  className="bg-white text-[#5c7fa3] font-semibold border rounded-md mt-4 p-2 hover:bg-gray-100 hover:cursor-pointer transition-colors duration-200 text-decoration-line: underline"
+                >
+                  Sign Up
+                </button>
+              </form>
+            </div>
           </div>
 
-          <div className="flex gap-3 ml-5">
-            <input
-              id="digital-marketing"
-              name="course"
-              type="radio"
-              className="border rounded-md"
-            />
-            <label htmlFor="digital-marketing" className="font-semibold">
-              Digital Marketing
-            </label>
-          </div>
+          <p className="text-[#5c7fa3]">
+            Already have an account?{" "}
+            <Link to="/login" className="hover:underline">
+              Login!
+            </Link>
+          </p>
         </div>
 
-        <p
-          className={`text-red-600 text-center mb-4 ${
-            showError ? "visible" : "hidden"
-          }`}
-        >
-          An account with this email already exists.
-        </p>
+        <div className="flex flex-col gap-4 relative">
+          <div
+            className="p-6 rounded-lg w-[350px] h-[200px] relative z-10"
+            style={{
+              backgroundColor: "#5c7fa3",
+              border: "1px solid #5c7fa3",
+            }}
+          >
+            <h3 className="text-3xl font-light text-white text-center mb-6 mt-6">
+              <span className="font-bold">Retention</span> starts with the right{" "}
+              <span className="font-bold">support</span>
+            </h3>
+          </div>
 
-        <button
-          type="submit"
-          className="border rounded-md mt-5 p-1 hover:cursor-pointer"
-        >
-          Submit
-        </button>
-      </form>
-      <p>
-        Already have an account?{" "}
-        <Link to="/login" className="hover:underline">
-          Login!
-        </Link>
-      </p>
-    </main>
+          <div
+            className="absolute -top-32 left-72 p-2 rounded-lg w-[350px] h-[260px] z-0"
+            style={{
+              backgroundColor: "#5c7fa3",
+              border: "1px solid #5c7fa3",
+            }}
+          >
+            <img
+              src="/hackathon-image-2.jpg"
+              alt="Hackathon image"
+              className="w-full h-full object-cover rounded-md"
+            />
+          </div>
+
+          <div
+            className="p-8 rounded-lg w-[350px] h-[400px] mb-11 ml-40"
+            style={{
+              backgroundColor: "#b6a79a",
+              border: "2px solid #5c7fa3",
+            }}
+          >
+            <h3 className="text-3xl font-normal text-white text-center mb-6">
+              Subscription includes:
+            </h3>
+          </div>
+        </div>
+      </main>
+    </div>
   );
 }

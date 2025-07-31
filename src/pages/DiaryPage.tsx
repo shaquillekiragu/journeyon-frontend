@@ -23,9 +23,12 @@ export default function DiaryPage(): React.ReactElement {
   useEffect(() => {
     async function fetchDairyEntries(userId: number) {
       try {
-        const response = await getUserDetails(userId);
+        const response = (await getUserDetails(userId)) as any;
         if (response && response.data && response.data.diary_entries) {
           setEntriesList(response.data.diary_entries);
+          setShowError(false);
+        } else {
+          setEntriesList([]);
           setShowError(false);
         }
       } catch (err) {
@@ -35,8 +38,10 @@ export default function DiaryPage(): React.ReactElement {
       }
     }
 
-    fetchDairyEntries(loggedInUser.id);
-  }, [entriesList]);
+    if (loggedInUser && loggedInUser.id) {
+      fetchDairyEntries(loggedInUser.id);
+    }
+  }, [entriesList, loggedInUser]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();

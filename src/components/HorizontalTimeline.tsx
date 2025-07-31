@@ -11,7 +11,6 @@ export default function HorizontalTimeline({
   const [clickedItems, setClickedItems] = useState<Set<number>>(new Set());
   const [expandedSquare, setExpandedSquare] = useState<number | null>(null);
 
-  // Sample text for each timeline item - you can customize these
   const timelineTexts = [
     "Induction", "Workshop 1", "Workshop 2", "Workshop 3", "Workshop 4", 
     "Workshop 5", "Workshop 6", "Workshop 7", "Portfolio", "Final Interview"

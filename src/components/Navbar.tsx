@@ -28,9 +28,7 @@ const Navbar = () => {
                 to="/home"
                 className={`text-lg ${
                   isActive("/home") ? "font-extrabold" : "font-light"
-                } hover:opacity-80 transition-all duration-200 ${
-                  isLoggedIn ? "!hidden" : "!visible"
-                }`}
+                } hover:opacity-80 transition-all duration-200`}
                 style={{ color: "#fdfbf1" }}
               >
                 Home
@@ -67,7 +65,9 @@ const Navbar = () => {
             <div className="flex-1 text-center">
               <button
                 onClick={handleSignOut}
-                className="text-lg font-light hover:opacity-80 transition-all duration-200"
+                className={`text-lg font-light hover:opacity-80 transition-all duration-200 ${
+                  isLoggedIn ? "!visible" : "!hidden"
+                }`}
                 style={{ color: "#fdfbf1" }}
               >
                 Sign Out

@@ -1,9 +1,5 @@
 import React from "react";
-
-interface ICreateDiaryEntryFormProps {
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  cancelNewEntry: () => void;
-}
+import type { ICreateDiaryEntryFormProps } from "../interfaces";
 
 export default function CreateDiaryEntryForm({
   handleSubmit,

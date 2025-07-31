@@ -1,15 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import type { INewAccount } from "../interfaces";
 import Header from "../components/Header";
-
-interface INewAccount {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
 
 export default function SignupPage(): React.ReactElement {
   const navigate = useNavigate();

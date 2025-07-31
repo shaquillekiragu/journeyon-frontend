@@ -1,11 +1,6 @@
 import { useProgress } from "../hooks/useProgress";
 import { getProgressPercentage } from "../utils/motivationalMessages";
-
-interface SubHeaderProps {
-  text: string;
-  showProgress?: boolean;
-  totalItems?: number;
-}
+import type { SubHeaderProps } from "../interfaces";
 
 const SubHeader = ({ text, showProgress = false, totalItems = 10 }: SubHeaderProps) => {
   const { completedItems } = useProgress();

@@ -1,22 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getUsers } from "../api";
 import { useAuth } from "../contexts/UserContext";
-
-// interface IAccount {
-//   id: number;
-//   email: string;
-//   password: string;
-//   first_name: string;
-//   last_name: string;
-// }
+import Header from "../components/Header";
+import type { IAccount } from "../interfaces";
 
 export default function LoginPage(): React.ReactElement {
   const navigate = useNavigate();
   const { setLoggedInUser, setIsLoggedIn } = useAuth();
 
   const response = getUsers();
-  const users = response.data.users;
+  const users = response?.data?.users || [];
   console.log(users, " < users");
 
   const [email, setEmail] = useState("");
@@ -26,28 +20,25 @@ export default function LoginPage(): React.ReactElement {
   const handleLogin = (e: React.FormEvent): void => {
     e.preventDefault();
 
-    const isCorrectEmail = users.some((user) => {
+    const isCorrectEmail = users.some((user: { user: IAccount }) => {
       return user.user.email === email;
     });
 
-    const isCorrectPassword = users.some((user) => {
+    const isCorrectPassword = users.some((user: { user: IAccount }) => {
       return user.user.password === password;
     });
 
     if (isCorrectEmail && isCorrectPassword) {
-      const user = users.find((user) => {
+      const user = users.find((user: { user: IAccount }) => {
         return user.user.email === email;
       });
       setLoggedInUser(user);
       setIsLoggedIn(true);
       navigate("/home");
       console.log(user, " < user");
+    } else {
+      setShowError(true);
     }
-    setShowError(true);
-
-    setShowError(false);
-    console.log("Logging in with...", email, password);
-    navigate("/home");
   };
 
   return (

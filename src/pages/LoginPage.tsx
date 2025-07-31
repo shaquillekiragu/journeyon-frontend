@@ -1,15 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getUsers } from "../api";
+import { useAuth } from "../contexts/UserContext";
 
 interface IAccount {
   id: number;
   email: string;
   password: string;
+  first_name: string;
+  last_name: string;
 }
 
 export default function LoginPage(): React.ReactElement {
   const navigate = useNavigate();
+  const { setLoggedInUser, setIsLoggedIn } = useAuth();
+
   const response = getUsers();
   const users = response.data.users;
   console.log(users, " < users");
@@ -30,7 +35,13 @@ export default function LoginPage(): React.ReactElement {
     });
 
     if (isCorrectEmail && isCorrectPassword) {
+      const user = users.find((user) => {
+        return user.user.email === email;
+      });
+      setLoggedInUser(user);
+      setIsLoggedIn(true);
       navigate("/home");
+      console.log(user, " < user");
     }
     setShowError(true);
   };

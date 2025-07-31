@@ -45,11 +45,9 @@ export function getUsers() {
   //     console.error("No data found in the response.");
   //     return null;
   //   }
-  // } catch (err) {
-  //   console.error("Error fetching events:", err.message || err);
+  // } catch (error) {
+  //   console.error("Error fetching events:", error.message || error);
   //   return null;
   // }
   return response;
 }
-
-// This is what response.data looks like:

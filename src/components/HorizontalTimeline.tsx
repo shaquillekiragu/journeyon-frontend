@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useProgress } from "../hooks/useProgress";
 
 interface HorizontalTimelineProps {
   totalItems?: number;
@@ -8,7 +9,7 @@ export default function HorizontalTimeline({
   totalItems = 10
 }: HorizontalTimelineProps): React.ReactElement {
   const items = Array.from({ length: totalItems }, (_, index) => index + 1);
-  const [clickedItems, setClickedItems] = useState<Set<number>>(new Set());
+  const { isItemCompleted, toggleItemCompletion } = useProgress();
   const [expandedSquare, setExpandedSquare] = useState<number | null>(null);
 
   const timelineTexts = [
@@ -21,21 +22,13 @@ export default function HorizontalTimeline({
   };
 
   const handleMarkAsDone = (item: number) => {
-    setClickedItems(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(item)) {
-        newSet.delete(item);
-      } else {
-        newSet.add(item);
-      }
-      return newSet;
-    });
+    toggleItemCompletion(item);
     setExpandedSquare(null);
   };
 
   return (
     <div className="w-full max-w-7xl mx-auto p-8">
-      <div className="flex flex-wrap items-start justify-between" style={{ paddingTop: '40px', paddingBottom: '120px' }}>
+      <div className="flex flex-wrap items-start justify-between" style={{ paddingTop: '20px', paddingBottom: '120px' }}>
         {items.map((item, index) => {
           const isTopPosition = index % 2 === 0; // Alternate top/bottom
           
@@ -45,9 +38,13 @@ export default function HorizontalTimeline({
               {isTopPosition && (
                 <div className="absolute left-1/2 transform -translate-x-1/2" style={{ top: '-10px' }}>
                   <div 
-                    className={`bg-white border-2 border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center cursor-pointer hover:scale-110 ${
-                      expandedSquare === item ? 'px-7 py-5 scale-110 z-20' : 'px-5 py-3'
+                    className={`border-2 border-gray-200 rounded-lg hover:shadow-lg transition-all duration-300 text-center cursor-pointer hover:scale-110 ${
+                      expandedSquare === item ? 'px-8 py-6 scale-110 z-20' : 'px-6 py-4'
                     } min-w-max whitespace-nowrap`}
+                    style={{
+                      backgroundColor: isItemCompleted(item) ? '#a2e3cc' : '#fdfbf1',
+                      boxShadow: '0 4px 6px -1px rgba(199, 184, 230, 0.3), 0 2px 4px -1px rgba(199, 184, 230, 0.2)'
+                    }}
                     onClick={() => handleSquareClick(item)}
                   >
                     <span className="text-gray-700 text-sm sm:text-base font-medium block">
@@ -57,20 +54,20 @@ export default function HorizontalTimeline({
                       <button
                         className="mt-2 px-3 py-1 text-white text-xs rounded transition-colors"
                         style={{
-                          backgroundColor: clickedItems.has(item) ? '#c7b8e6' : '#a2e3cc'
+                          backgroundColor: isItemCompleted(item) ? '#c7b8e6' : '#a2e3cc'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = clickedItems.has(item) ? '#b8a6d9' : '#8dd4b8';
+                          e.currentTarget.style.backgroundColor = isItemCompleted(item) ? '#b8a6d9' : '#8dd4b8';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = clickedItems.has(item) ? '#c7b8e6' : '#a2e3cc';
+                          e.currentTarget.style.backgroundColor = isItemCompleted(item) ? '#c7b8e6' : '#a2e3cc';
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleMarkAsDone(item);
                         }}
                       >
-                        {clickedItems.has(item) ? 'Move back to in progress?' : 'Mark as done?'}
+                        {isItemCompleted(item) ? 'Move back to \'in progress\'?' : 'Mark as done?'}
                       </button>
                     )}
                   </div>
@@ -79,11 +76,12 @@ export default function HorizontalTimeline({
               
               {/* Timeline Circle - centered vertically and horizontally */}
               <div 
-                className="absolute left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full border-4 border-white shadow-lg flex items-center justify-center transition-all duration-300 z-10"
+                className="absolute left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full border-4 border-white flex items-center justify-center transition-all duration-300 z-10"
                 style={{
                   top: '50%',
                   marginTop: '-28px', // Half of circle height to center it
-                  backgroundColor: clickedItems.has(item) ? '#a2e3cc' : '#fdfbf1'
+                  backgroundColor: isItemCompleted(item) ? '#a2e3cc' : '#fdfbf1',
+                  boxShadow: '0 4px 6px -1px rgba(199, 184, 230, 0.3), 0 2px 4px -1px rgba(199, 184, 230, 0.2)'
                 }}
               >
                 <span className="text-gray-800 font-semibold text-base">
@@ -118,9 +116,13 @@ export default function HorizontalTimeline({
               {!isTopPosition && (
                 <div className="absolute left-1/2 transform -translate-x-1/2" style={{ bottom: '-10px' }}>
                   <div 
-                    className={`bg-white border-2 border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center cursor-pointer hover:scale-110 ${
-                      expandedSquare === item ? 'px-7 py-5 scale-110 z-20' : 'px-5 py-3'
+                    className={`border-2 border-gray-200 rounded-lg hover:shadow-lg transition-all duration-300 text-center cursor-pointer hover:scale-110 ${
+                      expandedSquare === item ? 'px-8 py-6 scale-110 z-20' : 'px-6 py-4'
                     } min-w-max whitespace-nowrap`}
+                    style={{
+                      backgroundColor: isItemCompleted(item) ? '#a2e3cc' : '#fdfbf1',
+                      boxShadow: '0 4px 6px -1px rgba(199, 184, 230, 0.3), 0 2px 4px -1px rgba(199, 184, 230, 0.2)'
+                    }}
                     onClick={() => handleSquareClick(item)}
                   >
                     <span className="text-gray-700 text-sm sm:text-base font-medium block">
@@ -130,20 +132,20 @@ export default function HorizontalTimeline({
                       <button
                         className="mt-2 px-3 py-1 text-white text-xs rounded transition-colors"
                         style={{
-                          backgroundColor: clickedItems.has(item) ? '#c7b8e6' : '#a2e3cc'
+                          backgroundColor: isItemCompleted(item) ? '#c7b8e6' : '#a2e3cc'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = clickedItems.has(item) ? '#b8a6d9' : '#8dd4b8';
+                          e.currentTarget.style.backgroundColor = isItemCompleted(item) ? '#b8a6d9' : '#8dd4b8';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = clickedItems.has(item) ? '#c7b8e6' : '#a2e3cc';
+                          e.currentTarget.style.backgroundColor = isItemCompleted(item) ? '#c7b8e6' : '#a2e3cc';
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleMarkAsDone(item);
                         }}
                       >
-                        {clickedItems.has(item) ? 'Move back to in progress?' : 'Mark as done?'}
+                        {isItemCompleted(item) ? 'Move back to \'in progress\'?' : 'Mark as done?'}
                       </button>
                     )}
                   </div>

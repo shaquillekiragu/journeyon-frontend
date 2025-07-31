@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import UserProvider from "./contexts/UserContext";
+import { ProgressProvider } from "./contexts/ProgressContext";
 import WelcomePage from "./pages/WelcomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
@@ -11,14 +12,16 @@ import "./App.css";
 function App() {
   return (
     <UserProvider>
-      <Routes>
-        <Route path="/" element={<WelcomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/home" element={<Homepage />} />
-        <Route path="/diary" element={<DiaryPage />} />
-        <Route path="/progress" element={<ProgressPage />} />
-      </Routes>
+      <ProgressProvider>
+        <Routes>
+          <Route path="/" element={<WelcomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/home" element={<Homepage />} />
+          <Route path="/diary" element={<DiaryPage />} />
+          <Route path="/progress" element={<ProgressPage />} />
+        </Routes>
+      </ProgressProvider>
     </UserProvider>
   );
 }

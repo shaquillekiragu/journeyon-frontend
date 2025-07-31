@@ -15,10 +15,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav
-      className="w-full shadow-md border-b border-gray-200"
-      style={{ backgroundColor: "#5c7fa3" }}
-    >
+    <nav className="w-full shadow-md border-b border-gray-200 bg-theme-blue">
       <div className="w-full px-6 py-4">
         <div className="flex items-center justify-evenly w-full">
           {/* JourneyON */}

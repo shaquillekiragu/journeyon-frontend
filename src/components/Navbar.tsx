@@ -11,9 +11,7 @@ const Navbar = () => {
   };
 
   const handleSignOut = () => {
-    console.log("1");
     setLoggedInUser({});
-    console.log("2");
     setIsLoggedIn(false);
     navigate("/");
   };

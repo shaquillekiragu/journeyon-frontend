@@ -11,7 +11,6 @@ export default function LoginPage(): React.ReactElement {
 
   const response = getUsers();
   const users = response?.data?.users || [];
-  console.log(users, " < users");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

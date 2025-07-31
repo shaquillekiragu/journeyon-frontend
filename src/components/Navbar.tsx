@@ -1,4 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { logoutUser } from "../services/authService";
+import { DataContext } from "../contexts/DataContextObject";
+import { useContext } from "react";
 
 const Navbar = () => {
   const location = useLocation();
@@ -8,10 +11,12 @@ const Navbar = () => {
     return location.pathname === path;
   };
 
-  const handleSignOut = () => {
-    // Add sign out logic here
-    console.log("Signing out...");
-    navigate("/");
+  const {setUser} = useContext(DataContext)
+
+  const handleSignOut = (): void => {
+    logoutUser();
+    setUser( null );
+    navigate("/");    
   };
 
   return (
@@ -74,3 +79,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

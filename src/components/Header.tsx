@@ -6,10 +6,7 @@ const Header: React.FC<HeaderProps> = ({ size = "normal" }) => {
   const isLarge = size === "large";
 
   return (
-    <header
-      className="w-full shadow-lg border-b border-gray-300"
-      style={{ backgroundColor: "#fdfbf1" }}
-    >
+    <header className="w-full" style={{ backgroundColor: "#fefbf1" }}>
       <div className={`w-full ${isLarge ? "px-12 py-8" : "px-9 py-6"}`}>
         <div className="flex items-center w-full">
           <div className="text-left">

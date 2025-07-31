@@ -4,7 +4,8 @@ import { useAuth } from "../contexts/UserContext";
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { loggedInUser, setLoggedInUser, setIsLoggedIn } = useAuth();
+  const { loggedInUser, setLoggedInUser, isLoggedIn, setIsLoggedIn } =
+    useAuth();
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -27,7 +28,9 @@ const Navbar = () => {
                 to="/home"
                 className={`text-lg ${
                   isActive("/home") ? "font-extrabold" : "font-light"
-                } hover:opacity-80 transition-all duration-200`}
+                } hover:opacity-80 transition-all duration-200 ${
+                  isLoggedIn ? "!hidden" : "!visible"
+                }`}
                 style={{ color: "#fdfbf1" }}
               >
                 Home

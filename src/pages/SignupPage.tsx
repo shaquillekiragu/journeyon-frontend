@@ -58,7 +58,7 @@ export default function SignupPage(): React.ReactElement {
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#fefbf1" }}>
       <Header size="large" />
-      <main className="flex justify-center items-end gap-8 mt-[10vh]">
+      <main className="flex justify-center items-end gap-8 mt-[10vh] relative">
         <div className="flex flex-col gap-5">
           <div
             className="p-6 rounded-lg w-[500px] h-auto"
@@ -204,16 +204,45 @@ export default function SignupPage(): React.ReactElement {
           </p>
         </div>
 
-        <div
-          className="p-8 rounded-lg w-[350px] h-[400px] mb-11"
-          style={{
-            backgroundColor: "#b6a79a",
-            border: "2px solid #5c7fa3",
-          }}
-        >
-          <h3 className="text-xl font-semibold text-white text-center mb-6">
-            Subscription includes:
-          </h3>
+        <div className="flex flex-col gap-4 relative">
+          <div
+            className="p-6 rounded-lg w-[350px] h-[200px] relative z-10"
+            style={{
+              backgroundColor: "#5c7fa3",
+              border: "1px solid #5c7fa3",
+            }}
+          >
+            <h3 className="text-3xl font-light text-white text-center mb-6 mt-6">
+              <span className="font-bold">Retention</span> starts with the right{" "}
+              <span className="font-bold">support</span>
+            </h3>
+          </div>
+
+          <div
+            className="absolute -top-32 left-72 p-2 rounded-lg w-[350px] h-[260px] z-0"
+            style={{
+              backgroundColor: "#5c7fa3",
+              border: "1px solid #5c7fa3",
+            }}
+          >
+            <img
+              src="/hackathon-image-2.jpg"
+              alt="Hackathon image"
+              className="w-full h-full object-cover rounded-md"
+            />
+          </div>
+
+          <div
+            className="p-8 rounded-lg w-[350px] h-[400px] mb-11 ml-40"
+            style={{
+              backgroundColor: "#b6a79a",
+              border: "2px solid #5c7fa3",
+            }}
+          >
+            <h3 className="text-3xl font-normal text-white text-center mb-6">
+              Subscription includes:
+            </h3>
+          </div>
         </div>
       </main>
     </div>

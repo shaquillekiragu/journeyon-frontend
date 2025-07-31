@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL: string = "http://localhost:5002";
+const API_URL: string =
+  "http://journeyon-production.eba-68vspbsr.eu-west-2.elasticbeanstalk.com";
 
 const response = {
   data: {
@@ -58,7 +59,7 @@ export function getUsers() {
 
 export async function getUserDetails(id: number) {
   try {
-    const response = await axios.get(`${API_URL}/users/get-user-details/${id}`);
+    const response = await axios.get(`${API_URL}/user/get-user-details/${id}`);
     if (response && response.data) {
       return response;
     } else {

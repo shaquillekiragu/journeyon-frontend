@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getUsers } from "../api";
 import { useAuth } from "../contexts/UserContext";
+import Header from "../components/Header";
 
 // interface IAccount {
 //   id: number;

@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import UserProvider from "./contexts/UserContext";
 import WelcomePage from "./pages/WelcomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
@@ -9,7 +10,7 @@ import "./App.css";
 
 function App() {
   return (
-    <>
+    <UserProvider>
       <Routes>
         <Route path="/" element={<WelcomePage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -18,7 +19,7 @@ function App() {
         <Route path="/diary" element={<DiaryPage />} />
         <Route path="/progress" element={<ProgressPage />} />
       </Routes>
-    </>
+    </UserProvider>
   );
 }
 

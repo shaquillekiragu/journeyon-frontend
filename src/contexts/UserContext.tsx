@@ -2,8 +2,8 @@ import { createContext, useContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
 
 interface UserContextType {
-  authUser: any | null;
-  setAuthUser: (user: any | null) => void;
+  loggedInUser: any | null;
+  setLoggedInUser: (user: any | null) => void;
   isLoggedIn: boolean;
   setIsLoggedIn: (loggedIn: boolean) => void;
 }
@@ -13,30 +13,34 @@ export const UserContext = createContext<UserContextType | undefined>(
 );
 
 export function useAuth() {
-  return useContext(UserContext);
+  const context = useContext(UserContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within a UserProvider");
+  }
+  return context;
 }
 
 export default function UserProvider({ children }: { children: ReactNode }) {
-  const [authUser, setAuthUser] = useState(() => {
-    const savedUser = localStorage.getItem("authUser");
+  const [loggedInUser, setLoggedInUser] = useState(() => {
+    const savedUser = localStorage.getItem("loggedInUser");
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    if (authUser) {
-      localStorage.setItem("authUser", JSON.stringify(authUser));
+    if (loggedInUser) {
+      localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
       setIsLoggedIn(true);
     } else {
-      localStorage.removeItem("authUser");
+      localStorage.removeItem("loggedInUser");
       setIsLoggedIn(false);
     }
-  }, [authUser]);
+  }, [loggedInUser]);
 
   const value = {
-    authUser,
-    setAuthUser,
+    loggedInUser,
+    setLoggedInUser,
     isLoggedIn,
     setIsLoggedIn,
   };

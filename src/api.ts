@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL: string = "";
+const API_URL: string = "http://localhost:5002";
 
 const response = {
   data: {
@@ -19,8 +19,8 @@ const response = {
           id: 2,
           email: "JaneDoe@outlook.com",
           password: "password2",
-          firstName: "Jane",
-          lastName: "Doe",
+          first_name: "Jane",
+          last_name: "Doe",
         },
       },
       {
@@ -36,18 +36,40 @@ const response = {
   },
 };
 
+// export async function getUsers() {
 export function getUsers() {
-  // try {
-  //   const response = await axios.get(`${API_URL}/api/users`);
-  //   if (response && response.data) {
-  //     return response;
-  //   } else {
-  //     console.error("No data found in the response.");
-  //     return null;
-  //   }
-  // } catch (error) {
-  //   console.error("Error fetching events:", error.message || error);
-  //   return null;
-  // }
-  return response;
+  try {
+    // const response = await axios.get(`${API_URL}/Users/get-users`);
+    if (response && response.data) {
+      return response;
+    } else {
+      console.error("No data found in the response.");
+      return null;
+    }
+  } catch (error) {
+    console.error(
+      "Error fetching events:",
+      error instanceof Error ? error.message : error
+    );
+    return null;
+  }
+  // return response;
+}
+
+export async function getUserDetails(id: number) {
+  try {
+    const response = await axios.get(`${API_URL}/users/get-user-details/${id}`);
+    if (response && response.data) {
+      return response;
+    } else {
+      console.error("No data found in the response.");
+      return null;
+    }
+  } catch (error) {
+    console.error(
+      "Error fetching events:",
+      error instanceof Error ? error.message : error
+    );
+    return null;
+  }
 }

@@ -1,9 +1,5 @@
 import React from "react";
-
-interface ImageQuoteBannerProps {
-  imageSrc: string;
-  quote: string;
-}
+import type { ImageQuoteBannerProps } from "../interfaces";
 
 const ImageQuoteBanner: React.FC<ImageQuoteBannerProps> = ({
   imageSrc,

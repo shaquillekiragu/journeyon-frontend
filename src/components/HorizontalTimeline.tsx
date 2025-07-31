@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useProgress } from "../hooks/useProgress";
-
-interface HorizontalTimelineProps {
-  totalItems?: number;
-}
+import type { HorizontalTimelineProps } from “../interfaces”;
 
 export default function HorizontalTimeline({ 
   totalItems = 10

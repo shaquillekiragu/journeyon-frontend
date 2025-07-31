@@ -1,53 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getUsers } from "../api";
 import { useAuth } from "../contexts/UserContext";
 import Header from "../components/Header";
-
-// interface IAccount {
-//   id: number;
-//   email: string;
-//   password: string;
-//   first_name: string;
-//   last_name: string;
-// }
+import type { IAccount } from "../interfaces";
 
 export default function LoginPage(): React.ReactElement {
   const navigate = useNavigate();
   const { setLoggedInUser, setIsLoggedIn } = useAuth();
 
   const response = getUsers();
-  const users = response.data.users;
-  console.log(users, " < users");
+  const users = response?.data?.users || [];
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showError, setShowError] = useState(false);
+  const [showEmailError, setShowEmailError] = useState(false);
+  const [showPasswordError, setShowPasswordError] = useState(false);
 
   const handleLogin = (e: React.FormEvent): void => {
     e.preventDefault();
+    setShowEmailError(false);
+    setShowPasswordError(false);
+    const attemptedUser = users.find(
+      (user: { user: IAccount }) => user.user.email === email
+    );
 
-    const isCorrectEmail = users.some((user) => {
-      return user.user.email === email;
-    });
-
-    const isCorrectPassword = users.some((user) => {
-      return user.user.password === password;
-    });
-
-    if (isCorrectEmail && isCorrectPassword) {
-      const user = users.find((user) => {
-        return user.user.email === email;
-      });
-      setLoggedInUser(user);
-      setIsLoggedIn(true);
-      navigate("/home");
-      console.log(user, " < user");
+    if (!attemptedUser) {
+      setShowEmailError(true);
+      return;
     }
-    setShowError(true);
 
-    setShowError(false);
-    console.log("Logging in with...", email, password);
+    if (attemptedUser.user.password !== password) {
+      setShowPasswordError(true);
+      return;
+    }
+
+    setLoggedInUser(attemptedUser);
+    console.log(attemptedUser, " < user");
+    setIsLoggedIn(true);
     navigate("/home");
   };
 
@@ -109,11 +99,17 @@ export default function LoginPage(): React.ReactElement {
                 />
               </div>
 
-              {showError && (
+              {showEmailError && (
                 <p className="text-red-300 text-center mb-4">
                   An account with this email doesn't exist.
                 </p>
               )}
+              {showPasswordError && (
+                <p className="text-red-300 text-center mb-4">
+                  Your password for this account is incorrect.
+                </p>
+              )}
+
               <button
                 type="submit"
                 className="bg-white text-gray-800 font-semibold border rounded-md mt-4 p-2 hover:bg-gray-100 hover:cursor-pointer transition-colors duration-200 text-decoration-line: underline"

@@ -1,6 +1,4 @@
-interface SubHeaderProps {
-  text: string;
-}
+import type { SubHeaderProps } from "../interfaces";
 
 const SubHeader = ({ text }: SubHeaderProps) => {
   return (

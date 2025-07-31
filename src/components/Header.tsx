@@ -1,6 +1,4 @@
-interface HeaderProps {
-  size?: "normal" | "large";
-}
+import type { HeaderProps } from "../interfaces";
 
 const Header: React.FC<HeaderProps> = ({ size = "normal" }) => {
   const isLarge = size === "large";

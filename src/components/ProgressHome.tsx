@@ -34,7 +34,7 @@ const ProgressHome: React.FC<ProgressHomeProps> = ({ milestones = [] }) => {
                 )}
             </div>
             <div className="text-right">
-                <button className="blueBg text-white px-4 py-2 rounded hover:-translate-y-0.5 hover:cursor-pointer hover:!bg-green-500 transition-all duration-200">
+                <button className="blueBg text-white px-4 py-2 rounded hover:-translate-y-0.5 hover:cursor-pointer hover:!bg-sky-700 transition-all duration-200">
                     View my progress
                 </button>
             </div>

@@ -35,5 +35,14 @@ export async function deleteDiaryEntry(entryId: number) {
   }
 }
 
+export async function updateDiaryEntry(entryId: number, updatedEntry: { title: string; body: string }) {
+  try {
+    const response = await apiClient.put(`/dairy/update-dairy-entry/${entryId}`, updatedEntry);
+    return response;
+  } catch (error) {
+    console.error("Error updating diary entry:", error);
+    throw error;
+  }
+}
 
 export {getDairyEntries, createDairyEntry}

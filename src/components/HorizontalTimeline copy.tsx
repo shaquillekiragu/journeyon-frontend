@@ -100,17 +100,16 @@ export default function HorizontalTimeline({
           const isTopPosition = index % 2 === 0; // Alternate top/bottom
           
           return (
-            <div key={milestone.id} className="relative flex-shrink-0 mb-8" style={{ width: '200px', height: '280px', minWidth: '160px' }}>
+            <div key={milestone.id} className="relative flex-shrink-0 mb-8" style={{ width: '120px', height: '280px', minWidth: '120px' }}>
               {/* Square on top (for even indices) */}
               {isTopPosition && (
                 <div className="absolute left-1/2 transform -translate-x-1/2" style={{ top: '-10px' }}>
                   <div 
                     className={`border-2 border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center cursor-pointer hover:scale-110 ${
+                      milestone.isCompleted ? 'bg-sky-300' : 'bg-neutral-300'
+                    } ${
                       expandedSquare === milestone.id ? 'px-7 py-5 scale-110 z-20' : 'px-5 py-3'
                     } min-w-max whitespace-nowrap`}
-                    style={{
-                      backgroundColor: milestone.isCompleted ? '#ffffff' : '#f8f9fa'
-                    }}
                     onClick={() => handleSquareClick(milestone.id)}
                   >
                     <span className="text-gray-700 text-sm sm:text-base font-medium block">
@@ -182,11 +181,10 @@ export default function HorizontalTimeline({
                 <div className="absolute left-1/2 transform -translate-x-1/2" style={{ bottom: '-10px' }}>
                   <div 
                     className={`border-2 border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center cursor-pointer hover:scale-110 ${
+                      milestone.isCompleted ? 'bg-sky-300' : 'bg-neutral-300'
+                    } ${
                       expandedSquare === milestone.id ? 'px-7 py-5 scale-110 z-20' : 'px-5 py-3'
                     } min-w-max whitespace-nowrap`}
-                    style={{
-                      backgroundColor: milestone.isCompleted ? '#ffffff' : '#f8f9fa'
-                    }}
                     onClick={() => handleSquareClick(milestone.id)}
                   >
                     <span className="text-gray-700 text-sm sm:text-base font-medium block">
@@ -218,7 +216,7 @@ export default function HorizontalTimeline({
 
               {/* Arrow (except for last item) */}
               {index < milestoneItems.length - 1 && (
-                <div className="absolute left-full top-1/2 transform -translate-y-1/2 flex items-center justify-center" style={{ width: '40px' }}>
+                <div className="absolute left-full top-1/2 transform -translate-y-1/2 flex items-center justify-center" style={{ width: '30px' }}>
                   <svg 
                     className="w-4 h-3 sm:w-6 sm:h-4" 
                     viewBox="0 0 24 16" 

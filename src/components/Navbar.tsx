@@ -29,10 +29,9 @@ const Navbar = () => {
               to="/home"
               className={`text-lg ${
                 isActive("/home") ? "font-extrabold" : "font-light"
-              } hover:opacity-80 transition-all duration-200`}
-              style={{ color: "#fdfbf1" }}
+              } text-white hover:scale-110 transition-all duration-200 inline-block`}
             >
-              Home
+              JourneyOn
             </Link>
           </div>
 
@@ -42,8 +41,7 @@ const Navbar = () => {
               to="/diary"
               className={`text-lg ${
                 isActive("/diary") ? "font-extrabold" : "font-light"
-              } hover:opacity-80 transition-all duration-200`}
-              style={{ color: "#fdfbf1" }}
+              } text-white hover:scale-110 transition-all duration-200 inline-block`}
             >
               Diary
             </Link>
@@ -55,8 +53,7 @@ const Navbar = () => {
               to="/progress"
               className={`text-lg ${
                 isActive("/progress") ? "font-extrabold" : "font-light"
-              } hover:opacity-80 transition-all duration-200`}
-              style={{ color: "#fdfbf1" }}
+              } text-white hover:scale-110 transition-all duration-200 inline-block`}
             >
               Progress
             </Link>
@@ -66,8 +63,7 @@ const Navbar = () => {
           <div className="flex-1 text-center">
             <button
               onClick={handleSignOut}
-              className="text-lg font-light hover:opacity-80 transition-all duration-200"
-              style={{ color: "#fdfbf1" }}
+              className="text-lg font-light text-white hover:scale-110 transition-all duration-200 inline-block cursor-pointer"
             >
               {user ? "Sign Out" : "Sign In"}
             </button>

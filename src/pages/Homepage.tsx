@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import Header from "../components/Header";
+//import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import "tailwindcss";
 import { Link } from "react-router-dom";
@@ -40,7 +40,7 @@ export default function Homepage(): React.ReactElement {
   
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header size="large" />
+      {/* <Header size="large" /> */}
       <Navbar />
 
       <ImageQuoteBanner
@@ -50,7 +50,7 @@ export default function Homepage(): React.ReactElement {
 
       <SubHeader name={user!.firstName} text=" =) Read your motivational Quote of the Day!" />
       <main className="container mx-auto text-center">
-        <section className="grid grid-cols-1 md:grid-cols-2 mx-2 gap-4">
+        <section className="grid grid-cols-1 md:grid-cols-2 mx-2 gap-9">
           <Link to={"/diary"}>
             <DiaryHome diaryEntries={diaryEntries} />
           </Link>

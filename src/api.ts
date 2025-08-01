@@ -1,7 +1,9 @@
-// import axios from "axios";
+import axios from "axios";
 
-const API_URL: string =
-  "http://journeyon-production.eba-68vspbsr.eu-west-2.elasticbeanstalk.com";
+// const API_URL: string =
+//   "http://journeyon-production.eba-68vspbsr.eu-west-2.elasticbeanstalk.com";
+
+const API_URL: string = "http://localhost:5002";
 
 const response = {
   data: {

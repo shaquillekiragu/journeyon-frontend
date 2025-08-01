@@ -1,6 +1,6 @@
 import { useState, useContext, type FC, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { DataContext } from "../contexts/DataContextObject"; 
+import { DataContext } from "../contexts/DataContextObject";
 import { loginUser } from "../services/authService";
 import Header from "../components/Header";
 
@@ -16,12 +16,13 @@ const LoginPageV2: FC = () => {
     e.preventDefault();
     setShowError(false);
     try {
-      const userData = await loginUser( { email, password } );
-      setUser( userData );
-      localStorage.setItem('user', JSON.stringify(userData))
-      navigate( "/home" );
+      const userData = await loginUser({ email, password });
+      console.log(userData);
+      setUser(userData);
+      localStorage.setItem("user", JSON.stringify(userData));
+      navigate("/home");
     } catch (error: unknown) {
-      console.error('Login failed:', error);
+      console.error("Login failed:", error);
       setShowError(true);
     }
   };
@@ -47,12 +48,9 @@ const LoginPageV2: FC = () => {
               Log In
             </h1>
 
-            <form onSubmit={ handleLogin } className="flex flex-col gap-5">
+            <form onSubmit={handleLogin} className="flex flex-col gap-5">
               <div className="flex gap-5 items-center">
-                <label
-                  htmlFor="email"
-                  className="font-normal text-white w-20"
-                >
+                <label htmlFor="email" className="font-normal text-white w-20">
                   Email:
                 </label>
                 <input
@@ -68,7 +66,10 @@ const LoginPageV2: FC = () => {
               </div>
 
               <div className="flex gap-5 items-center">
-                <label htmlFor="password" className="font-normal text-white w-20">
+                <label
+                  htmlFor="password"
+                  className="font-normal text-white w-20"
+                >
                   Password:
                 </label>
                 <input
@@ -88,7 +89,11 @@ const LoginPageV2: FC = () => {
               >
                 Login
               </button>
-              { showError && <p className="text-red-300 text-center mb-4">An error occurred. Please try again.</p>}
+              {showError && (
+                <p className="text-red-300 text-center mb-4">
+                  An error occurred. Please try again.
+                </p>
+              )}
             </form>
           </div>
         </div>
@@ -101,6 +106,6 @@ const LoginPageV2: FC = () => {
       </main>
     </div>
   );
-}
+};
 
 export default LoginPageV2;

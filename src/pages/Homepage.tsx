@@ -12,24 +12,21 @@ export default function Homepage(): React.ReactElement {
       <Header size="large" />
       <Navbar />
 
-      <ImageQuoteBanner
-        imageSrc="/hackathon-image.png"
-        quote=""
-      />
+      <ImageQuoteBanner imageSrc="/hackathon-image.png" quote="" />
 
-      <main className="container mx-auto text-center">
-        <section className="grid grid-cols-1 md:grid-cols-2 mx-2 gap-4 mt-6">
-          <Link to="/diary">
-            <button className="bg-[#5c7fa3] text-white text-3xl px-40 py-20 rounded hover:bg-sky-700">
+      <main className="container mx-auto text-center px-4">
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mt-8 max-w-4xl mx-auto">
+          <Link to="/diary" className="w-full sm:w-auto">
+            <button className="bg-[#5c7fa3] text-white text-xl sm:text-2xl lg:text-3xl px-8 sm:px-16 lg:px-24 py-6 sm:py-8 lg:py-12 rounded hover:bg-sky-700 w-full sm:w-auto min-w-[200px] font-sans font-medium transition-colors duration-200">
               View my diary
             </button>
           </Link>
-          <Link to="/progress">
-            <button className="bg-[#5c7fa3] text-white text-3xl px-40 py-20 rounded hover:bg-sky-700">
+          <Link to="/progress" className="w-full sm:w-auto">
+            <button className="bg-[#5c7fa3] text-white text-xl sm:text-2xl lg:text-3xl px-8 sm:px-16 lg:px-24 py-6 sm:py-8 lg:py-12 rounded hover:bg-sky-700 w-full sm:w-auto min-w-[200px] font-sans font-medium transition-colors duration-200">
               View my progress
             </button>
           </Link>
-        </section>
+        </div>
         <br />
         <br />
       </main>

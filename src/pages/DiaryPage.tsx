@@ -6,42 +6,18 @@ import DiaryEntry from "../components/DiaryEntry";
 import CreateDiaryEntryForm from "../components/CreateDiaryEntryForm";
 import { getTodaysDate } from "../utils/getTodaysDate";
 import SubHeader from "../components/SubHeader";
-import { getUserDetails } from "../api";
-import { useAuth } from "../contexts/UserContext";
+import { useData } from "../contexts/DataContext";
 import Loading from "../components/Loading";
 import type { IDiaryEntry } from "../interfaces";
 
 export default function DiaryPage(): React.ReactElement {
-  const { loggedInUser } = useAuth();
+  const { loggedInUser } = useData();
 
   const [entriesList, setEntriesList] = useState<IDiaryEntry[]>([]);
   const [creatingNewEntry, setCreatingNewEntry] = useState<boolean>(false);
   const [entryIdCounter, setEntryIdCounter] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
   const [showError, setShowError] = useState(false);
-
-  useEffect(() => {
-    async function fetchDairyEntries(userId: number) {
-      try {
-        const response = (await getUserDetails(userId)) as any;
-        if (response && response.data && response.data.diary_entries) {
-          setEntriesList(response.data.diary_entries);
-          setShowError(false);
-        } else {
-          setEntriesList([]);
-          setShowError(false);
-        }
-      } catch (err) {
-        setShowError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    if (loggedInUser && loggedInUser.id) {
-      fetchDairyEntries(loggedInUser.id);
-    }
-  }, [loggedInUser]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
@@ -74,9 +50,13 @@ export default function DiaryPage(): React.ReactElement {
       <div className="min-h-screen" style={{ backgroundColor: "#fefbf1" }}>
         <Header />
         <Navbar />
-        <section className="container mx-auto px-6 flex flex-col justify-center items-center gap-10 py-8">
-          <SubHeader text="Let's record your thoughts and experiences!" showProgress={false} totalItems={0} />
-          <h1 className="text-4xl font-bold text-gray-800">Diary Page</h1>
+        <section className="container mx-auto px-6 flex flex-col justify-center items-center gap-10">
+          <SubHeader
+            text="Let's record your thoughts and experiences!"
+            showProgress={false}
+            totalItems={0}
+          />
+          <h1 className="text-3xl font-bold text-gray-800">Diary page</h1>
           <div className="flex justify-center items-center">
             <p
               className={`font-semibold text-red-500 ${

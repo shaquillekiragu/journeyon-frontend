@@ -1,11 +1,18 @@
 import { useProgress } from "../hooks/useProgress";
 import { getProgressPercentage } from "../utils/motivationalMessages";
 import type { SubHeaderProps } from "../interfaces";
+import { useData } from "../contexts/DataContext";
 
-const SubHeader = ({ text, showProgress = false, totalItems = 10 }: SubHeaderProps) => {
+const SubHeader = ({
+  text,
+  showProgress = false,
+  totalItems = 10,
+}: SubHeaderProps) => {
   const { completedItems } = useProgress();
   const completedCount = completedItems.size;
   const progressPercentage = getProgressPercentage(completedCount, totalItems);
+  const { loggedInUser } = useData();
+  console.log(loggedInUser);
 
   return (
     <section className="w-full flex justify-center py-6">
@@ -14,11 +21,12 @@ const SubHeader = ({ text, showProgress = false, totalItems = 10 }: SubHeaderPro
         style={{ backgroundColor: "#b6a79a" }}
       >
         <div className="text-center">
-          Welcome back, Nabiha! {text}
+          Welcome back {loggedInUser?.user?.first_name ?? "user"}! {text}
           {showProgress && (
             <div className="mt-3">
               <div className="text-sm mb-2 opacity-80">
-                Progress: {completedCount}/{totalItems} ({progressPercentage}% Complete)
+                Progress: {completedCount}/{totalItems} ({progressPercentage}%
+                Complete)
               </div>
             </div>
           )}

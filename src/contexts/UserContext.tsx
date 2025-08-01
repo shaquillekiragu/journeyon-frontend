@@ -20,7 +20,10 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const savedUser = localStorage.getItem("loggedInUser");
+    return savedUser ? true : false;
+  });
 
   useEffect(() => {
     if (loggedInUser) {

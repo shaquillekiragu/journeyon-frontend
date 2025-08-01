@@ -1,21 +1,20 @@
-import { Routes, Route } from "react-router-dom";
-import UserProvider from "./contexts/UserContext";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { ProgressProvider } from "./contexts/ProgressContext";
+import { DataProvider } from "./contexts/DataContext";
 import WelcomePage from "./pages/WelcomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import Homepage from "./pages/Homepage";
 import DiaryPage from "./pages/DiaryPage";
 import ProgressPage from "./pages/ProgressPage";
-import ErrorPage from "./pages/ErrorPage";
 import "./App.css";
-import { useAuth } from "./contexts/UserContext";
+import { useData } from "./contexts/DataContext";
 
 function App() {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useData();
 
   return (
-    <UserProvider>
+    <DataProvider>
       <ProgressProvider>
         <Routes>
           <Route path="/" element={<WelcomePage />} />
@@ -23,19 +22,19 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route
             path="/home"
-            element={isLoggedIn ? <Homepage /> : <ErrorPage />}
+            element={isLoggedIn ? <Homepage /> : <Navigate to="/login" />}
           />
           <Route
             path="/diary"
-            element={isLoggedIn ? <DiaryPage /> : <ErrorPage />}
+            element={isLoggedIn ? <DiaryPage /> : <Navigate to="/login" />}
           />
           <Route
             path="/progress"
-            element={isLoggedIn ? <ProgressPage /> : <ErrorPage />}
+            element={isLoggedIn ? <ProgressPage /> : <Navigate to="/login" />}
           />
         </Routes>
       </ProgressProvider>
-    </UserProvider>
+    </DataProvider>
   );
 }
 

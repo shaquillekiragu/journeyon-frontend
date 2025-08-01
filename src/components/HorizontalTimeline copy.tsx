@@ -1,13 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import type { HorizontalTimelineProps, MilestoneProgress } from "../Interfaces/MilestoneModel";
+import { updateMilestoneStatus } from "../services/progressService";
 
 export default function HorizontalTimeline({ 
-  milestones = []
+  milestones = [],
+  userId
 }: HorizontalTimelineProps): React.ReactElement {
   const [expandedSquare, setExpandedSquare] = useState<number | null>(null);
+  const [localMilestones, setLocalMilestones] = useState<MilestoneProgress[]>(milestones);
+
+  // Update local state when milestones prop changes
+  React.useEffect(() => {
+    setLocalMilestones(milestones);
+  }, [milestones]);
+
+  // Add debugging and ensure milestones is an array
+  console.log("Milestones received:", milestones);
+  console.log("Milestones type:", typeof milestones);
+  console.log("Is array:", Array.isArray(milestones));
+
+  // Ensure milestones is always an array
+  const milestonesArray = Array.isArray(localMilestones) ? localMilestones : [];
 
   // Convert milestones to a format that includes completion status
-  const milestoneItems = milestones.map((milestone, index) => ({
+  const milestoneItems = milestonesArray.map((milestone, index) => ({
     id: milestone.Milestone.id,
     title: milestone.Milestone.title,
     description: milestone.Milestone.description,
@@ -19,52 +35,105 @@ export default function HorizontalTimeline({
     setExpandedSquare(expandedSquare === milestoneId ? null : milestoneId);
   };
 
-  const handleMarkAsDone = (milestoneId: number) => {
-    // TODO: Implement API call to update milestone status
-    // This would typically make a PUT/PATCH request to update the milestone status
-    console.log(`Toggling milestone ${milestoneId} status`);
+  const handleMarkAsDone = async (milestoneId: number) => {
+    if (!userId) {
+      console.error("User ID is required to update milestone status");
+      return;
+    }
+
+    const currentMilestone = localMilestones.find(m => m.Milestone.id === milestoneId);
+    if (!currentMilestone) return;
+
+    const newStatus = currentMilestone.Status === "completed" ? "in-progress" : "completed";
+
+    // Update local state immediately for instant UI feedback
+    setLocalMilestones(prevMilestones => 
+      prevMilestones.map(milestone => {
+        if (milestone.Milestone.id === milestoneId) {
+          return {
+            ...milestone,
+            Status: newStatus,
+            CompletedAt: newStatus === "completed" ? new Date().toISOString() : undefined
+          };
+        }
+        return milestone;
+      })
+    );
+    
+    try {
+      // Make API call to persist the change
+      await updateMilestoneStatus(userId, milestoneId, newStatus);
+      console.log(`Successfully updated milestone ${milestoneId} to ${newStatus}`);
+    } catch (error) {
+      console.error("Failed to update milestone status:", error);
+      
+      // Revert local state if API call fails
+      setLocalMilestones(prevMilestones => 
+        prevMilestones.map(milestone => {
+          if (milestone.Milestone.id === milestoneId) {
+            return {
+              ...milestone,
+              Status: currentMilestone.Status,
+              CompletedAt: currentMilestone.CompletedAt
+            };
+          }
+          return milestone;
+        })
+      );
+      
+      alert("Failed to update milestone status. Please try again.");
+    }
+    
     setExpandedSquare(null);
   };
 
 
   return (
     <div className="w-full max-w-7xl mx-auto p-8">
-      <div className="flex flex-wrap items-start justify-between" style={{ paddingTop: '40px', paddingBottom: '120px' }}>
-        {items.map((item, index) => {
+      {milestoneItems.length === 0 ? (
+        <div className="text-center py-8">
+          <p className="text-gray-600">No milestones available yet.</p>
+        </div>
+      ) : (
+        <div className="flex flex-wrap items-start justify-between" style={{ paddingTop: '40px', paddingBottom: '120px' }}>
+          {milestoneItems.map((milestone, index) => {
           const isTopPosition = index % 2 === 0; // Alternate top/bottom
           
           return (
-            <div key={item} className="relative flex-shrink-0 mb-8" style={{ width: '100px', height: '280px', minWidth: '80px' }}>
+            <div key={milestone.id} className="relative flex-shrink-0 mb-8" style={{ width: '200px', height: '280px', minWidth: '160px' }}>
               {/* Square on top (for even indices) */}
               {isTopPosition && (
                 <div className="absolute left-1/2 transform -translate-x-1/2" style={{ top: '-10px' }}>
                   <div 
-                    className={`bg-white border-2 border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center cursor-pointer hover:scale-110 ${
-                      expandedSquare === item ? 'px-7 py-5 scale-110 z-20' : 'px-5 py-3'
+                    className={`border-2 border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center cursor-pointer hover:scale-110 ${
+                      expandedSquare === milestone.id ? 'px-7 py-5 scale-110 z-20' : 'px-5 py-3'
                     } min-w-max whitespace-nowrap`}
-                    onClick={() => handleSquareClick(item)}
+                    style={{
+                      backgroundColor: milestone.isCompleted ? '#ffffff' : '#f8f9fa'
+                    }}
+                    onClick={() => handleSquareClick(milestone.id)}
                   >
                     <span className="text-gray-700 text-sm sm:text-base font-medium block">
-                      {timelineTexts[index] || `Step ${item}`}
+                      {milestone.title}
                     </span>
-                    {expandedSquare === item && (
+                    {expandedSquare === milestone.id && (
                       <button
                         className="mt-2 px-3 py-1 text-white text-xs rounded transition-colors"
                         style={{
-                          backgroundColor: clickedItems.has(item) ? '#c7b8e6' : '#a2e3cc'
+                          backgroundColor: milestone.isCompleted ? '#c7b8e6' : '#a2e3cc'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = clickedItems.has(item) ? '#b8a6d9' : '#8dd4b8';
+                          e.currentTarget.style.backgroundColor = milestone.isCompleted ? '#b8a6d9' : '#8dd4b8';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = clickedItems.has(item) ? '#c7b8e6' : '#a2e3cc';
+                          e.currentTarget.style.backgroundColor = milestone.isCompleted ? '#c7b8e6' : '#a2e3cc';
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleMarkAsDone(item);
+                          handleMarkAsDone(milestone.id);
                         }}
                       >
-                        {clickedItems.has(item) ? 'Move back to in progress?' : 'Mark as done?'}
+                        {milestone.isCompleted ? 'Move back to in progress?' : 'Mark as done?'}
                       </button>
                     )}
                   </div>
@@ -77,11 +146,11 @@ export default function HorizontalTimeline({
                 style={{
                   top: '50%',
                   marginTop: '-28px', // Half of circle height to center it
-                  backgroundColor: clickedItems.has(item) ? '#a2e3cc' : '#fdfbf1'
+                  backgroundColor: milestone.isCompleted ? '#a2e3cc' : '#e5e7eb'
                 }}
               >
                 <span className="text-gray-800 font-semibold text-base">
-                  {item}
+                  {milestone.index}
                 </span>
               </div>
 
@@ -91,17 +160,17 @@ export default function HorizontalTimeline({
                 opacity: 0.4
               }}>
                 <svg 
-                  className="w-3 h-3" 
-                  viewBox="0 0 12 12" 
+                  className="w-6 h-6" 
+                  viewBox="0 0 24 24" 
                   fill="none"
                   style={{
                     transform: isTopPosition ? 'rotate(180deg)' : 'rotate(0deg)'
                   }}
                 >
                   <path 
-                    d="M6 2L6 10M6 10L3 7M6 10L9 7" 
+                    d="M12 4L12 20M12 20L6 14M12 20L18 14" 
                     stroke="#6b7280" 
-                    strokeWidth="1.5" 
+                    strokeWidth="2" 
                     strokeLinecap="round" 
                     strokeLinejoin="round"
                   />
@@ -112,32 +181,35 @@ export default function HorizontalTimeline({
               {!isTopPosition && (
                 <div className="absolute left-1/2 transform -translate-x-1/2" style={{ bottom: '-10px' }}>
                   <div 
-                    className={`bg-white border-2 border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center cursor-pointer hover:scale-110 ${
-                      expandedSquare === item ? 'px-7 py-5 scale-110 z-20' : 'px-5 py-3'
+                    className={`border-2 border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center cursor-pointer hover:scale-110 ${
+                      expandedSquare === milestone.id ? 'px-7 py-5 scale-110 z-20' : 'px-5 py-3'
                     } min-w-max whitespace-nowrap`}
-                    onClick={() => handleSquareClick(item)}
+                    style={{
+                      backgroundColor: milestone.isCompleted ? '#ffffff' : '#f8f9fa'
+                    }}
+                    onClick={() => handleSquareClick(milestone.id)}
                   >
                     <span className="text-gray-700 text-sm sm:text-base font-medium block">
-                      {timelineTexts[index] || `Step ${item}`}
+                      {milestone.title}
                     </span>
-                    {expandedSquare === item && (
+                    {expandedSquare === milestone.id && (
                       <button
                         className="mt-2 px-3 py-1 text-white text-xs rounded transition-colors"
                         style={{
-                          backgroundColor: clickedItems.has(item) ? '#c7b8e6' : '#a2e3cc'
+                          backgroundColor: milestone.isCompleted ? '#c7b8e6' : '#a2e3cc'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = clickedItems.has(item) ? '#b8a6d9' : '#8dd4b8';
+                          e.currentTarget.style.backgroundColor = milestone.isCompleted ? '#b8a6d9' : '#8dd4b8';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = clickedItems.has(item) ? '#c7b8e6' : '#a2e3cc';
+                          e.currentTarget.style.backgroundColor = milestone.isCompleted ? '#c7b8e6' : '#a2e3cc';
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleMarkAsDone(item);
+                          handleMarkAsDone(milestone.id);
                         }}
                       >
-                        {clickedItems.has(item) ? 'Move back to in progress?' : 'Mark as done?'}
+                        {milestone.isCompleted ? 'Move back to in progress?' : 'Mark as done?'}
                       </button>
                     )}
                   </div>
@@ -145,8 +217,8 @@ export default function HorizontalTimeline({
               )}
 
               {/* Arrow (except for last item) */}
-              {index < items.length - 1 && (
-                <div className="absolute left-full top-1/2 transform -translate-y-1/2 flex items-center justify-center" style={{ width: '20px' }}>
+              {index < milestoneItems.length - 1 && (
+                <div className="absolute left-full top-1/2 transform -translate-y-1/2 flex items-center justify-center" style={{ width: '40px' }}>
                   <svg 
                     className="w-4 h-3 sm:w-6 sm:h-4" 
                     viewBox="0 0 24 16" 
@@ -164,7 +236,7 @@ export default function HorizontalTimeline({
               )}
               
               {/* Final Arrow (after last circle) */}
-              {index === items.length - 1 && (
+              {index === milestoneItems.length - 1 && (
                 <div className="absolute left-full top-1/2 transform -translate-y-1/2 flex items-center justify-center ml-2">
                   <svg 
                     className="w-4 h-3 sm:w-6 sm:h-4" 
@@ -185,6 +257,7 @@ export default function HorizontalTimeline({
           );
         })}
       </div>
+      )}
     </div>
   );
 }

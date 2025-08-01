@@ -7,13 +7,6 @@ import { Link } from "react-router-dom";
 import ImageQuoteBanner from "../components/ImageQuoteBanner.tsx";
 
 export default function Homepage(): React.ReactElement {
-  const [quote, setQuote] = useState("");
-  
-  useEffect(() => {
-    const tempQuote: string = getQuote();
-    setQuote(tempQuote);
-  }, []);
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Header size="large" />
@@ -21,7 +14,7 @@ export default function Homepage(): React.ReactElement {
 
       <ImageQuoteBanner
         imageSrc="/hackathon-image.png"
-        quote={quote}
+        quote=""
       />
 
       <main className="container mx-auto text-center">

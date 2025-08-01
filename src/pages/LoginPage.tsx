@@ -1,44 +1,29 @@
-import React, { useState } from "react";
+import { useState, useContext, type FC, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { getUsers } from "../api";
-import { useAuth } from "../contexts/UserContext";
+import { DataContext } from "../contexts/DataContextObject"; 
+import { loginUser } from "../services/authService";
 import Header from "../components/Header";
-import type { IAccount } from "../interfaces";
 
-export default function LoginPage(): React.ReactElement {
+const LoginPageV2: FC = () => {
   const navigate = useNavigate();
-  const { setLoggedInUser, setIsLoggedIn } = useAuth();
-
-  const response = getUsers();
-  const users = response?.data?.users || [];
+  const { setUser } = useContext(DataContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showEmailError, setShowEmailError] = useState(false);
-  const [showPasswordError, setShowPasswordError] = useState(false);
+  const [showError, setShowError] = useState(false);
 
-  const handleLogin = (e: React.FormEvent): void => {
+  const handleLogin = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
-    setShowEmailError(false);
-    setShowPasswordError(false);
-    const attemptedUser = users.find(
-      (user: { user: IAccount }) => user.user.email === email
-    );
-
-    if (!attemptedUser) {
-      setShowEmailError(true);
-      return;
+    setShowError(false);
+    try {
+      const userData = await loginUser( { email, password } );
+      setUser( userData );
+      localStorage.setItem('user', JSON.stringify(userData))
+      navigate( "/home" );
+    } catch (error: unknown) {
+      console.error('Login failed:', error);
+      setShowError(true);
     }
-
-    if (attemptedUser.user.password !== password) {
-      setShowPasswordError(true);
-      return;
-    }
-
-    setLoggedInUser(attemptedUser);
-    console.log(attemptedUser, " < user");
-    setIsLoggedIn(true);
-    navigate("/home");
   };
 
   return (
@@ -62,12 +47,11 @@ export default function LoginPage(): React.ReactElement {
               Log In
             </h1>
 
-            <form onSubmit={handleLogin} className="flex flex-col gap-5">
-              <div className="flex gap-5">
+            <form onSubmit={ handleLogin } className="flex flex-col gap-5">
+              <div className="flex gap-5 items-center">
                 <label
                   htmlFor="email"
-                  className="font-normal
-                 text-white"
+                  className="font-normal text-white w-20"
                 >
                   Email:
                 </label>
@@ -83,8 +67,8 @@ export default function LoginPage(): React.ReactElement {
                 />
               </div>
 
-              <div className="flex gap-5">
-                <label htmlFor="password" className="font-normal text-white">
+              <div className="flex gap-5 items-center">
+                <label htmlFor="password" className="font-normal text-white w-20">
                   Password:
                 </label>
                 <input
@@ -98,24 +82,13 @@ export default function LoginPage(): React.ReactElement {
                   required
                 />
               </div>
-
-              {showEmailError && (
-                <p className="text-red-300 text-center mb-4">
-                  An account with this email doesn't exist.
-                </p>
-              )}
-              {showPasswordError && (
-                <p className="text-red-300 text-center mb-4">
-                  Your password for this account is incorrect.
-                </p>
-              )}
-
               <button
                 type="submit"
                 className="bg-white text-gray-800 font-semibold border rounded-md mt-4 p-2 hover:bg-gray-100 hover:cursor-pointer transition-colors duration-200 text-decoration-line: underline"
               >
                 Login
               </button>
+              { showError && <p className="text-red-300 text-center mb-4">An error occurred. Please try again.</p>}
             </form>
           </div>
         </div>
@@ -129,3 +102,5 @@ export default function LoginPage(): React.ReactElement {
     </div>
   );
 }
+
+export default LoginPageV2;

@@ -11,7 +11,7 @@ const Navbar = () => {
     return location.pathname === path;
   };
 
-  const {setUser} = useContext(DataContext)
+  const {setUser, user} = useContext(DataContext)
 
   const handleSignOut = (): void => {
     logoutUser();
@@ -69,7 +69,7 @@ const Navbar = () => {
               className="text-lg font-light hover:opacity-80 transition-all duration-200"
               style={{ color: "#fdfbf1" }}
             >
-              Sign Out
+              {user ? "Sign Out" : "Sign In"}
             </button>
           </div>
         </div>

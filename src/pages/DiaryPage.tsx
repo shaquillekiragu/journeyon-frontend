@@ -1,39 +1,22 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
-import DiaryEntry from "../components/DiaryEntry";
+import {DiaryEntry} from "../components/DiaryEntry";
 import CreateDiaryEntryForm from "../components/CreateDiaryEntryForm";
-import { getTodaysDate } from "../utils/getTodaysDate";
 import SubHeader from "../components/SubHeader";
+import { DataContext } from "../contexts/DataContextObject";
+import { getDairyEntries } from "../services/dairyService";
 
-export default function DiaryPage(): React.ReactElement {
-  interface IDiaryEntry {
-    id: number;
-    title: string;
-    body: string;
-    date: string;
-  }
+export default function DiaryPage() {
+  const { dairyEntries, user, setDairyEntries } = useContext(DataContext);
 
-  const [entriesList, setEntriesList] = useState<IDiaryEntry[]>([]);
+  useEffect(() => {
+    getDairyEntries( user!.id ).then(e => setDairyEntries(e));
+  }, [] );
+  
   const [creatingNewEntry, setCreatingNewEntry] = useState<boolean>(false);
-  const [entryIdCounter, setEntryIdCounter] = useState<number>(0);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-
-    const newEntry: IDiaryEntry = {
-      id: entryIdCounter,
-      title: formData.get("entryTitle") as string,
-      body: formData.get("entryBody") as string,
-      date: getTodaysDate(),
-    };
-
-    setEntriesList((prevEntries) => [...prevEntries, newEntry]);
-    setEntryIdCounter((prevCounter) => prevCounter + 1);
-    setCreatingNewEntry(false);
-  }
 
   function addNewEntry(): void {
     setCreatingNewEntry(true);
@@ -48,18 +31,17 @@ export default function DiaryPage(): React.ReactElement {
       <Header />
       <Navbar />
       <main className="container mx-auto px-6 flex flex-col justify-center items-center gap-10">
-        <SubHeader text="Let's record your thoughts and experiences!" />
+        <SubHeader text="Let's record your thoughts and experiences!" name={ user!.firstName} />
         <h1 className="text-3xl font-bold text-gray-800">Diary page</h1>
         <ul className="">
-          {entriesList.map((entry) => (
+          {dairyEntries?.map((entry) => (
             <li key={entry.id} className="">
-              <DiaryEntry entry={entry} />
+              <DiaryEntry model={entry} />
             </li>
           ))}
         </ul>
         {creatingNewEntry ? (
           <CreateDiaryEntryForm
-            handleSubmit={handleSubmit}
             cancelNewEntry={cancelNewEntry}
           />
         ) : (

@@ -6,11 +6,16 @@ interface PrivateRouteProps {
   children: JSX.Element;
 }
 
-const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
-  const { user } = useContext(DataContext);
-  return user
-    ? children
-    : <Navigate to="/login" replace />;
+const PrivateRoute: FC<PrivateRouteProps> = ( { children } ) => {
+  const { user, isInitialized } = useContext( DataContext );
+  
+  if ( !isInitialized ) {
+    return null;
+  }
+
+  return user === null
+    ? < Navigate to="/login" replace />
+    : children;
 };
 
 export default PrivateRoute;

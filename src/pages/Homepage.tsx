@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import "tailwindcss";
@@ -7,8 +7,11 @@ import SubHeader from "../components/SubHeader";
 import ImageQuoteBanner from "../components/ImageQuoteBanner.tsx";
 import DiaryHome from "../components/DiaryHome";
 import ProgressHome from "../components/ProgressHome";
+import { DataContext } from "../contexts/DataContextObject.ts";
 
 export default function Homepage(): React.ReactElement {
+  const { user } = useContext( DataContext )
+  
   return (
     <div className="min-h-screen bg-gray-50">
       <Header size="large" />
@@ -19,7 +22,7 @@ export default function Homepage(): React.ReactElement {
         quote="Confidence doesn't come from knowing everything - it comes from knowing you can learn anything"
       />
 
-      <SubHeader text=" =) Read your motivational Quote of the Day!" />
+      <SubHeader name={user!.firstName} text=" =) Read your motivational Quote of the Day!" />
       <main className="container mx-auto text-center">
         <section className="grid grid-cols-1 md:grid-cols-2 mx-2 gap-4">
           <Link to={"/diary"}>

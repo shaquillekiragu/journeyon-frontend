@@ -3,10 +3,11 @@ import { useNavigate, Link } from "react-router-dom";
 import { DataContext } from "../contexts/DataContextObject"; 
 import { loginUser } from "../services/authService";
 import Header from "../components/Header";
+import { getDairyEntries } from "../services/dairyService";
 
 const LoginPageV2: FC = () => {
   const navigate = useNavigate();
-  const { setUser } = useContext(DataContext);
+  const { setUser, setDairyEntries } = useContext(DataContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,7 +20,9 @@ const LoginPageV2: FC = () => {
       const userData = await loginUser( { email, password } );
       setUser( userData );
       localStorage.setItem('user', JSON.stringify(userData))
-      navigate("/home");
+      navigate( "/home" );
+      const dairyEntries = await getDairyEntries( userData.id );
+      setDairyEntries( dairyEntries );
     } catch (error: unknown) {
       console.error('Login failed:', error);
       setShowError(true);

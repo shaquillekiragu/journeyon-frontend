@@ -1,69 +1,50 @@
-import { createContext, useState, useEffect } from "react";
+import React, { createContext, useState } from "react";
 import type { ReactNode } from "react";
 import type { IDiaryEntry } from "../interfaces";
-import { getUserDetails } from "../api";
 
 interface DiaryContextType {
-  entriesList: IDiaryEntry[];
-  setEntriesList: (entries: IDiaryEntry[]) => void;
-  addEntry: (entry: IDiaryEntry) => void;
-  isLoading: boolean;
-  showError: boolean;
-  fetchDiaryEntries: (userId: number) => Promise<void>;
+  entries: IDiaryEntry[];
+  addEntry: (entry: Omit<IDiaryEntry, 'id'>) => void;
+  deleteEntry: (id: number) => void;
+  updateEntry: (id: number, updatedEntry: Partial<IDiaryEntry>) => void;
 }
 
 const DiaryContext = createContext<DiaryContextType | undefined>(undefined);
 
-export { DiaryContext };
+interface DiaryProviderProps {
+  children: ReactNode;
+}
 
-export default function DiaryProvider({ children }: { children: ReactNode }) {
-  const [entriesList, setEntriesList] = useState<IDiaryEntry[]>(() => {
-    const savedEntries = localStorage.getItem("diaryEntries");
-    return savedEntries ? JSON.parse(savedEntries) : [];
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [showError, setShowError] = useState(false);
+export function DiaryProvider({ children }: DiaryProviderProps) {
+  const [entries, setEntries] = useState<IDiaryEntry[]>([]);
+  const [nextId, setNextId] = useState(1);
 
-  // Save entries to localStorage whenever entriesList changes
-  useEffect(() => {
-    localStorage.setItem("diaryEntries", JSON.stringify(entriesList));
-  }, [entriesList]);
-
-  const fetchDiaryEntries = async (userId: number) => {
-    setIsLoading(true);
-    try {
-      const response = await getUserDetails(userId);
-      if (response && response.data && response.data.diary_entries) {
-        setEntriesList(response.data.diary_entries);
-        setShowError(false);
-      } else {
-        // Keep existing entries if API doesn't return any
-        setShowError(false);
-      }
-    } catch (error) {
-      console.error("Failed to fetch diary entries:", error);
-      setShowError(true);
-    } finally {
-      setIsLoading(false);
-    }
+  const addEntry = (entry: Omit<IDiaryEntry, 'id'>) => {
+    const newEntry: IDiaryEntry = {
+      ...entry,
+      id: nextId,
+    };
+    setEntries(prev => [...prev, newEntry]);
+    setNextId(prev => prev + 1);
   };
 
-  const addEntry = (entry: IDiaryEntry) => {
-    setEntriesList((prevEntries) => [entry, ...prevEntries]); // Add new entry to the beginning (newest first)
+  const deleteEntry = (id: number) => {
+    setEntries(prev => prev.filter(entry => entry.id !== id));
   };
 
-  const value = {
-    entriesList,
-    setEntriesList,
-    addEntry,
-    isLoading,
-    showError,
-    fetchDiaryEntries,
+  const updateEntry = (id: number, updatedEntry: Partial<IDiaryEntry>) => {
+    setEntries(prev => 
+      prev.map(entry => 
+        entry.id === id ? { ...entry, ...updatedEntry } : entry
+      )
+    );
   };
 
   return (
-    <DiaryContext.Provider value={value}>
+    <DiaryContext.Provider value={{ entries, addEntry, deleteEntry, updateEntry }}>
       {children}
     </DiaryContext.Provider>
   );
 }
+
+export { DiaryContext };

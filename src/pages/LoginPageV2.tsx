@@ -51,11 +51,10 @@ const LoginPageV2: FC = () => {
             </h1>
 
             <form onSubmit={ handleLogin } className="flex flex-col gap-5">
-              <div className="flex gap-5">
+              <div className="flex gap-5 items-center">
                 <label
                   htmlFor="email"
-                  className="font-normal
-                 text-white"
+                  className="font-normal text-white w-20"
                 >
                   Email:
                 </label>
@@ -71,8 +70,8 @@ const LoginPageV2: FC = () => {
                 />
               </div>
 
-              <div className="flex gap-5">
-                <label htmlFor="password" className="font-normal text-white">
+              <div className="flex gap-5 items-center">
+                <label htmlFor="password" className="font-normal text-white w-20">
                   Password:
                 </label>
                 <input

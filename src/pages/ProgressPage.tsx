@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import SubHeader from "../components/SubHeader";
 //import HorizontalTimeline from "../components/HorizontalTimeline";
-import HorizontalTimeline from "../components/HorizontalTimeline copy";
+import HorizontalTimeline from "../components/HorizontalTimeline";
 import { DataContext } from "../contexts/DataContextObject";
 import { getMilestones } from "../services/progressService";
 import type { MilestoneProgress } from "../Interfaces/MilestoneModel";

@@ -45,7 +45,6 @@ export default function Homepage(): React.ReactElement {
 
       <ImageQuoteBanner
         imageSrc="/hackathon-image.png"
-        quote="Confidence doesn't come from knowing everything - it comes from knowing you can learn anything"
       />
 
       <SubHeader name={user!.firstName} text=" =) Read your motivational Quote of the Day!" />

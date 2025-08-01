@@ -7,9 +7,13 @@ import SignupPage from "./pages/SignupPage";
 import Homepage from "./pages/Homepage";
 import DiaryPage from "./pages/DiaryPage";
 import ProgressPage from "./pages/ProgressPage";
+import ErrorPage from "./pages/ErrorPage";
 import "./App.css";
+import { useAuth } from "./contexts/UserContext";
 
 function App() {
+  const { isLoggedIn } = useAuth();
+
   return (
     <UserProvider>
       <ProgressProvider>
@@ -17,9 +21,18 @@ function App() {
           <Route path="/" element={<WelcomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/home" element={<Homepage />} />
-          <Route path="/diary" element={<DiaryPage />} />
-          <Route path="/progress" element={<ProgressPage />} />
+          <Route
+            path="/home"
+            element={isLoggedIn ? <Homepage /> : <ErrorPage />}
+          />
+          <Route
+            path="/diary"
+            element={isLoggedIn ? <DiaryPage /> : <ErrorPage />}
+          />
+          <Route
+            path="/progress"
+            element={isLoggedIn ? <ProgressPage /> : <ErrorPage />}
+          />
         </Routes>
       </ProgressProvider>
     </UserProvider>

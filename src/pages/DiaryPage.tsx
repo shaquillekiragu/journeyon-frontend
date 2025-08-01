@@ -6,7 +6,6 @@ import DiaryEntry from "../components/DiaryEntry";
 import CreateDiaryEntryForm from "../components/CreateDiaryEntryForm";
 import { getTodaysDate } from "../utils/getTodaysDate";
 import SubHeader from "../components/SubHeader";
-import { getUserDetails } from "../api";
 import { useData } from "../contexts/DataContext";
 import Loading from "../components/Loading";
 import type { IDiaryEntry } from "../interfaces";
@@ -19,29 +18,6 @@ export default function DiaryPage(): React.ReactElement {
   const [entryIdCounter, setEntryIdCounter] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
   const [showError, setShowError] = useState(false);
-
-  useEffect(() => {
-    async function fetchDairyEntries(userId: number) {
-      try {
-        const response = (await getUserDetails(userId)) as any;
-        if (response && response.data && response.data.diary_entries) {
-          setEntriesList(response.data.diary_entries);
-          setShowError(false);
-        } else {
-          setEntriesList([]);
-          setShowError(false);
-        }
-      } catch (err) {
-        setShowError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    if (loggedInUser && loggedInUser.user && loggedInUser.user.id) {
-      fetchDairyEntries(loggedInUser.user.id);
-    }
-  }, [entriesList, loggedInUser]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();

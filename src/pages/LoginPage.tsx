@@ -1,12 +1,12 @@
-import { useState, useContext, type FC, type FormEvent } from "react";
+import { useState, type FC, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { DataContext } from "../contexts/DataContextObject";
+import { useData } from "../contexts/DataContext";
 import { loginUser } from "../services/authService";
 import Header from "../components/Header";
 
 const LoginPageV2: FC = () => {
   const navigate = useNavigate();
-  const { setUser } = useContext(DataContext);
+  const { setLoggedInUser } = useData();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,8 +18,19 @@ const LoginPageV2: FC = () => {
     try {
       const userData = await loginUser({ email, password });
       console.log(userData);
-      setUser(userData);
-      localStorage.setItem("user", JSON.stringify(userData));
+
+      // Convert the User object to the format expected by setLoggedInUser
+      const convertedUser = {
+        user: {
+          id: userData.id,
+          email: userData.email,
+          first_name: userData.firstName,
+          last_name: userData.lastName,
+          password: "", // Not stored in the converted format
+        },
+      };
+
+      setLoggedInUser(convertedUser);
       navigate("/home");
     } catch (error: unknown) {
       console.error("Login failed:", error);

@@ -1,8 +1,7 @@
 import { useProgress } from "../hooks/useProgress";
-import { useContext } from "react";
 import { getProgressPercentage } from "../utils/motivationalMessages";
 import type { SubHeaderProps } from "../interfaces";
-import { DataContext } from "../contexts/DataContextObject";
+import { useData } from "../contexts/DataContext";
 
 const SubHeader = ({
   text,
@@ -12,8 +11,8 @@ const SubHeader = ({
   const { completedItems } = useProgress();
   const completedCount = completedItems.size;
   const progressPercentage = getProgressPercentage(completedCount, totalItems);
-  const { user } = useContext(DataContext);
-  console.log(user);
+  const { loggedInUser } = useData();
+  console.log(loggedInUser);
 
   return (
     <section className="w-full flex justify-center py-6">
@@ -22,7 +21,7 @@ const SubHeader = ({
         style={{ backgroundColor: "#b6a79a" }}
       >
         <div className="text-center">
-          Welcome back {user?.firstName ?? "user"}! {text}
+          Welcome back {loggedInUser?.user?.first_name ?? "user"}! {text}
           {showProgress && (
             <div className="mt-3">
               <div className="text-sm mb-2 opacity-80">

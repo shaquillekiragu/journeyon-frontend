@@ -7,12 +7,12 @@ import CreateDiaryEntryForm from "../components/CreateDiaryEntryForm";
 import { getTodaysDate } from "../utils/getTodaysDate";
 import SubHeader from "../components/SubHeader";
 import { getUserDetails } from "../api";
-import { useAuth } from "../contexts/UserContext";
+import { useData } from "../contexts/DataContext";
 import Loading from "../components/Loading";
 import type { IDiaryEntry } from "../interfaces";
 
 export default function DiaryPage(): React.ReactElement {
-  const { loggedInUser } = useAuth();
+  const { loggedInUser } = useData();
 
   const [entriesList, setEntriesList] = useState<IDiaryEntry[]>([]);
   const [creatingNewEntry, setCreatingNewEntry] = useState<boolean>(false);
@@ -38,8 +38,8 @@ export default function DiaryPage(): React.ReactElement {
       }
     }
 
-    if (loggedInUser && loggedInUser.id) {
-      fetchDairyEntries(loggedInUser.id);
+    if (loggedInUser && loggedInUser.user && loggedInUser.user.id) {
+      fetchDairyEntries(loggedInUser.user.id);
     }
   }, [entriesList, loggedInUser]);
 
@@ -75,7 +75,11 @@ export default function DiaryPage(): React.ReactElement {
         <Header />
         <Navbar />
         <section className="container mx-auto px-6 flex flex-col justify-center items-center gap-10">
-          <SubHeader text="Let's record your thoughts and experiences!" />
+          <SubHeader
+            text="Let's record your thoughts and experiences!"
+            showProgress={false}
+            totalItems={0}
+          />
           <h1 className="text-3xl font-bold text-gray-800">Diary page</h1>
           <div className="flex justify-center items-center">
             <p

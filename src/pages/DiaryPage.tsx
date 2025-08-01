@@ -41,7 +41,7 @@ export default function DiaryPage(): React.ReactElement {
     if (loggedInUser && loggedInUser.id) {
       fetchDairyEntries(loggedInUser.id);
     }
-  }, [entriesList, loggedInUser]);
+  }, [loggedInUser]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
@@ -71,45 +71,50 @@ export default function DiaryPage(): React.ReactElement {
     return <Loading page="Diary" />;
   } else {
     return (
-      <main className="min-h-screen bg-gray-50">
+      <div className="min-h-screen" style={{ backgroundColor: "#fefbf1" }}>
         <Header />
         <Navbar />
-        <section className="container mx-auto px-6 flex flex-col justify-center items-center gap-10">
-          <SubHeader text="Let's record your thoughts and experiences!" />
-          <h1 className="text-3xl font-bold text-gray-800">Diary page</h1>
+        <section className="container mx-auto px-6 flex flex-col justify-center items-center gap-10 py-8">
+          <SubHeader text="Let's record your thoughts and experiences!" showProgress={false} totalItems={0} />
+          <h1 className="text-4xl font-bold text-gray-800">Diary Page</h1>
           <div className="flex justify-center items-center">
             <p
-              className={`font-semibold text-red-300 ${
+              className={`font-semibold text-red-500 ${
                 showError ? "visible" : "hidden"
               }`}
             >
-              Failed to load dairy entries. Please try again later.
+              Failed to load diary entries. Please try again later.
             </p>
           </div>
-          <ul className="">
-            {entriesList.map((entry) => (
-              <li key={entry.id} className="">
-                <DiaryEntry entry={entry} />
-              </li>
-            ))}
-          </ul>
-          {creatingNewEntry ? (
+          
+          {!creatingNewEntry && (
+            <button
+              type="button"
+              onClick={addNewEntry}
+              className="bg-white text-gray-800 font-semibold border-2 border-gray-800 rounded-md py-3 px-8 hover:bg-gray-100 hover:cursor-pointer transition-colors duration-200 underline"
+              style={{
+                borderColor: "#5c7fa3",
+                color: "#5c7fa3",
+              }}
+            >
+              New Entry
+            </button>
+          )}
+
+          {creatingNewEntry && (
             <CreateDiaryEntryForm
               handleSubmit={handleSubmit}
               cancelNewEntry={cancelNewEntry}
             />
-          ) : (
-            <></>
           )}
-          <button
-            type="button"
-            onClick={addNewEntry}
-            className="border rounded-md hover:cursor-pointer py-1 px-5"
-          >
-            New Entry
-          </button>
+
+          <div className="w-full max-w-4xl flex flex-col items-center">
+            {entriesList.map((entry) => (
+              <DiaryEntry key={entry.id} entry={entry} />
+            ))}
+          </div>
         </section>
-      </main>
+      </div>
     );
   }
 }

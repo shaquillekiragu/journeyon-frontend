@@ -27,6 +27,8 @@ export interface HeaderProps {
 
 export interface SubHeaderProps {
   text: string;
+  showProgress: boolean;
+  totalItems: number;
 }
 
 export interface HorizontalTimelineProps {

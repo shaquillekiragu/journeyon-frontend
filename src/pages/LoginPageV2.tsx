@@ -1,44 +1,63 @@
-import React, { useState } from "react";
+import { useState, useContext, type FC, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { getUsers } from "../api";
-import { useAuth } from "../contexts/UserContext";
+import { DataContext } from "../contexts/DataContextObject";
+import { loginUser } from "../services/authService";
 import Header from "../components/Header";
-import type { IAccount } from "../interfaces";
+import { getDairyEntries } from "../services/dairyService";
+// import type { IAccount } from "../interfaces";
 
-export default function LoginPage(): React.ReactElement {
+// export default function LoginPage(): React.ReactElement {
+//   const navigate = useNavigate();
+//   const { setLoggedInUser, setIsLoggedIn } = useAuth();
+
+//   const response = getUsers();
+//   const users = response?.data?.users || [];
+
+export default function LoginPageV2(): FC {
   const navigate = useNavigate();
-  const { setLoggedInUser, setIsLoggedIn } = useAuth();
+  const { setUser, setDairyEntries } = useContext(DataContext);
 
-  const response = getUsers();
-  const users = response?.data?.users || [];
-
+  // const [showEmailError, setShowEmailError] = useState(false);
+  // const [showPasswordError, setShowPasswordError] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showEmailError, setShowEmailError] = useState(false);
-  const [showPasswordError, setShowPasswordError] = useState(false);
+  const [showError, setShowError] = useState(false);
 
-  const handleLogin = (e: React.FormEvent): void => {
+  const handleLogin = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
-    setShowEmailError(false);
-    setShowPasswordError(false);
-    const attemptedUser = users.find(
-      (user: { user: IAccount }) => user.user.email === email
-    );
+    // setShowEmailError(false);
+    // setShowPasswordError(false);
+    // const attemptedUser = users.find(
+    //   (user: { user: IAccount }) => user.user.email === email
+    // );
 
-    if (!attemptedUser) {
-      setShowEmailError(true);
-      return;
+    // if (!attemptedUser) {
+    //   setShowEmailError(true);
+    //   return;
+    // }
+
+    // if (attemptedUser.user.password !== password) {
+    //   setShowPasswordError(true);
+    //   return;
+    // }
+
+    // setLoggedInUser(attemptedUser);
+    // console.log(attemptedUser, " < user");
+    // setIsLoggedIn(true);
+    // navigate("/home");
+
+    setShowError(false);
+    try {
+      const userData = await loginUser({ email, password });
+      setUser(userData);
+      localStorage.setItem("user", JSON.stringify(userData));
+      navigate("/home");
+      const dairyEntries = await getDairyEntries(userData.id);
+      setDairyEntries(dairyEntries);
+    } catch (error: unknown) {
+      console.error("Login failed:", error);
+      setShowError(true);
     }
-
-    if (attemptedUser.user.password !== password) {
-      setShowPasswordError(true);
-      return;
-    }
-
-    setLoggedInUser(attemptedUser);
-    console.log(attemptedUser, " < user");
-    setIsLoggedIn(true);
-    navigate("/home");
   };
 
   return (
@@ -63,12 +82,8 @@ export default function LoginPage(): React.ReactElement {
             </h1>
 
             <form onSubmit={handleLogin} className="flex flex-col gap-5">
-              <div className="flex gap-5">
-                <label
-                  htmlFor="email"
-                  className="font-normal
-                 text-white"
-                >
+              <div className="flex gap-5 items-center">
+                <label htmlFor="email" className="font-normal text-white w-20">
                   Email:
                 </label>
                 <input
@@ -83,8 +98,11 @@ export default function LoginPage(): React.ReactElement {
                 />
               </div>
 
-              <div className="flex gap-5">
-                <label htmlFor="password" className="font-normal text-white">
+              <div className="flex gap-5 items-center">
+                <label
+                  htmlFor="password"
+                  className="font-normal text-white w-20"
+                >
                   Password:
                 </label>
                 <input
@@ -99,7 +117,7 @@ export default function LoginPage(): React.ReactElement {
                 />
               </div>
 
-              {showEmailError && (
+              {/* {showEmailError && (
                 <p className="text-red-300 text-center mb-4">
                   An account with this email doesn't exist.
                 </p>
@@ -108,7 +126,7 @@ export default function LoginPage(): React.ReactElement {
                 <p className="text-red-300 text-center mb-4">
                   Your password for this account is incorrect.
                 </p>
-              )}
+              )} */}
 
               <button
                 type="submit"
@@ -116,6 +134,11 @@ export default function LoginPage(): React.ReactElement {
               >
                 Login
               </button>
+              {showError && (
+                <p className="text-red-300 text-center mb-4">
+                  An error occurred. Please try again.
+                </p>
+              )}
             </form>
           </div>
         </div>

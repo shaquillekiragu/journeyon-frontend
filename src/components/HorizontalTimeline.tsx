@@ -8,6 +8,7 @@ export default function HorizontalTimeline({
   const items = Array.from({ length: totalItems }, (_, index) => index + 1);
   const { isItemCompleted, toggleItemCompletion } = useProgress();
   const [expandedSquare, setExpandedSquare] = useState<number | null>(null);
+  const [localMilestones, setLocalMilestones] = useState<MilestoneProgress[]>(milestones);
 
   const timelineTexts = [
     "Induction",
@@ -22,14 +23,33 @@ export default function HorizontalTimeline({
     "Final Interview",
   ];
 
-  const handleSquareClick = (item: number) => {
-    setExpandedSquare(expandedSquare === item ? null : item);
+  // Add debugging and ensure milestones is an array
+  console.log("Milestones received:", milestones);
+  console.log("Milestones type:", typeof milestones);
+  console.log("Is array:", Array.isArray(milestones));
+
+  // Ensure milestones is always an array
+  const milestonesArray = Array.isArray(localMilestones) ? localMilestones : [];
+
+  // Convert milestones to a format that includes completion status
+  const milestoneItems = milestonesArray.map((milestone, index) => ({
+    id: milestone.Milestone.id,
+    title: milestone.Milestone.title,
+    description: milestone.Milestone.description,
+    isCompleted: milestone.Status === "completed",
+    completionDate: milestone.CompletedAt,
+    index: index + 1
+  }));
+
+  const handleSquareClick = (milestoneId: number) => {
+    setExpandedSquare(expandedSquare === milestoneId ? null : milestoneId);
   };
 
   const handleMarkAsDone = (item: number) => {
     toggleItemCompletion(item);
     setExpandedSquare(null);
   };
+
 
   return (
     <div className="w-full max-w-7xl mx-auto p-8">
@@ -68,9 +88,17 @@ export default function HorizontalTimeline({
                     onClick={() => handleSquareClick(item)}
                   >
                     <span className="text-gray-700 text-sm sm:text-base font-medium block">
-                      {timelineTexts[index] || `Step ${item}`}
+                      {milestone.title}
                     </span>
-                    {expandedSquare === item && (
+                    {milestone.isCompleted && milestone.completionDate && (
+                      <span className="text-xs mt-1 block" style={{ 
+                        color: 'black', 
+                        opacity: 0.8 
+                      }}>
+                        {formatDate(milestone.completionDate)}
+                      </span>
+                    )}
+                    {expandedSquare === milestone.id && (
                       <button
                         className="mt-2 px-3 py-1 text-white text-xs rounded transition-colors"
                         style={{
@@ -88,7 +116,7 @@ export default function HorizontalTimeline({
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleMarkAsDone(item);
+                          handleMarkAsDone(milestone.id);
                         }}
                       >
                         {isItemCompleted(item)
@@ -114,7 +142,7 @@ export default function HorizontalTimeline({
                 }}
               >
                 <span className="text-gray-800 font-semibold text-base">
-                  {item}
+                  {milestone.index}
                 </span>
               </div>
 
@@ -144,6 +172,7 @@ export default function HorizontalTimeline({
                     strokeLinejoin="round"
                   />
                 </svg>
+                
               </div>
 
               {/* Square on bottom (for odd indices) */}
@@ -168,9 +197,17 @@ export default function HorizontalTimeline({
                     onClick={() => handleSquareClick(item)}
                   >
                     <span className="text-gray-700 text-sm sm:text-base font-medium block">
-                      {timelineTexts[index] || `Step ${item}`}
+                      {milestone.title}
                     </span>
-                    {expandedSquare === item && (
+                    {milestone.isCompleted && milestone.completionDate && (
+                      <span className="text-xs mt-1 block" style={{ 
+                        color: 'black', 
+                        opacity: 0.8 
+                      }}>
+                        {formatDate(milestone.completionDate)}
+                      </span>
+                    )}
+                    {expandedSquare === milestone.id && (
                       <button
                         className="mt-2 px-3 py-1 text-white text-xs rounded transition-colors"
                         style={{
@@ -188,7 +225,7 @@ export default function HorizontalTimeline({
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleMarkAsDone(item);
+                          handleMarkAsDone(milestone.id);
                         }}
                       >
                         {isItemCompleted(item)
@@ -197,6 +234,7 @@ export default function HorizontalTimeline({
                       </button>
                     )}
                   </div>
+                  
                 </div>
               )}
 
@@ -244,6 +282,7 @@ export default function HorizontalTimeline({
           );
         })}
       </div>
+      )}
     </div>
   );
 }

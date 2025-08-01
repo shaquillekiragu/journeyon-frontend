@@ -2,12 +2,13 @@ import { Routes, Route } from "react-router-dom";
 import UserProvider from "./contexts/UserContext";
 import { ProgressProvider } from "./contexts/ProgressContext";
 import WelcomePage from "./pages/WelcomePage";
-import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import Homepage from "./pages/Homepage";
 import DiaryPage from "./pages/DiaryPage";
 import ProgressPage from "./pages/ProgressPage";
+import PrivateRoute from "./routes/PrivateRoute";
 import "./App.css";
+import LoginPageV2 from "./pages/LoginPageV2";
 
 function App() {
   return (

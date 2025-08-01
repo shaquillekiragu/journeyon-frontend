@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/UserContext";
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { loggedInUser, setLoggedInUser, isLoggedIn, setIsLoggedIn } =
+  const { setLoggedInUser, isLoggedIn, setIsLoggedIn } =
     useAuth();
 
   const isActive = (path: string) => {
@@ -76,12 +76,6 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-      <p className="text-center font-semibold text-lg mt-3">
-        (Temp feature - for tracking login/logout functionality)
-      </p>
-      <p className="text-center font-semibold text-2xl my-3">
-        Logged in user: {loggedInUser?.user?.email}
-      </p>
     </>
   );
 };

@@ -1,10 +1,37 @@
-import React from "react";
-import type { ICreateDiaryEntryFormProps } from "../interfaces";
+import React, { useContext, useState } from "react";
+import { createDairyEntry, getDairyEntries } from "../services/dairyService";
+import { DataContext } from "../contexts/DataContextObject";
+import type { NewDairyModel } from "../Interfaces/DairyModel";
+
+interface ICreateDiaryEntryFormProps {
+  cancelNewEntry: () => void;
+}
 
 export default function CreateDiaryEntryForm({
-  handleSubmit,
   cancelNewEntry,
 }: ICreateDiaryEntryFormProps): React.ReactElement {
+  const [statetitle, updateTitle] = useState("");
+  const [statebody, updateBody] = useState("");
+  const { user, setDairyEntries } = useContext(DataContext);
+
+  async function handleSubmit(
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> {
+    event.preventDefault();
+
+    const data: NewDairyModel = {
+      userId: user!.id,
+      title: statetitle,
+      body: statebody,
+    };
+    const success = await createDairyEntry(data);
+    if (success) {
+      const entries = await getDairyEntries(user!.id);
+      setDairyEntries(entries);
+      cancelNewEntry();
+    }
+  }
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -21,6 +48,7 @@ export default function CreateDiaryEntryForm({
           placeholder=" Entry title..."
           className="border rounded-md p-1"
           required
+          onChange={(e) => updateTitle(e.target.value)}
         />
       </div>
       <div className="flex flex-col gap-2">
@@ -33,6 +61,7 @@ export default function CreateDiaryEntryForm({
           placeholder=" What's on your mind??..."
           className="border rounded-md p-3 min-h-[100px] resize-vertical"
           required
+          onChange={(e) => updateBody(e.target.value)}
         />
       </div>
       <div className="flex justify-between">

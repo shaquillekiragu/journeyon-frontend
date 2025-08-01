@@ -17,7 +17,7 @@ export default function DiaryPage(): React.ReactElement {
   const [entriesList, setEntriesList] = useState<IDiaryEntry[]>([]);
   const [creatingNewEntry, setCreatingNewEntry] = useState<boolean>(false);
   const [entryIdCounter, setEntryIdCounter] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [showError, setShowError] = useState(false);
 
   useEffect(() => {
